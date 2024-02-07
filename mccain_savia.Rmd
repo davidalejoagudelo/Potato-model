@@ -23,6 +23,8 @@ mccain_savia <- read_excel("C:/Users/david/OneDrive/Escritorio/Personal/R/mccain
 head(mccain_savia)
 ```
 
+Inicialmente, se realiza un análisis exploratorio del dataframe utilizado, para tener claridad sobre las variables a implementar posteriormente.
+
 ```{r}
 names(mccain_savia)
 ```

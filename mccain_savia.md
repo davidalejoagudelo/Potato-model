@@ -31,6 +31,10 @@ head(mccain_savia)
     ## # … with 2 more variables: NO3 <dbl>, MATERIA_SECA <lgl>, and abbreviated
     ## #   variable names ¹​Muestreo, ²​Tratamiento, ³​Repetición
 
+Inicialmente, se realiza un análisis exploratorio del dataframe
+utilizado, para tener claridad sobre las variables a implementar
+posteriormente.
+
 ``` r
 names(mccain_savia)
 ```

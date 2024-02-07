@@ -17,6 +17,8 @@ setwd("C:/Users/david/OneDrive/Escritorio/Personal/R")
 
 ### 1) CONTENIDO EN SAVIA EN EL TIEMPO
 
+Primero que todo, vamos a utilizar la información de elementos contenidos en savia, determinados en diferentes momentos para los tratamientos en cuestión.
+
 ```{r}
 library(readxl)
 mccain_savia <- read_excel("C:/Users/david/OneDrive/Escritorio/Personal/R/mccain_savia.xlsx")
@@ -29,6 +31,10 @@ Inicialmente, se realiza un análisis exploratorio del dataframe utilizado, para
 names(mccain_savia)
 ```
 
+Por cuestiones de estética, se realiza un primer apartado en el cual se definen los estándares de los gráficos que se generarán más adelante.
+
+En este caso, utilizaremos la librería ggplot2.
+
 ```{r}
 library(ggplot2)
 
@@ -36,6 +42,10 @@ tema <-   theme(legend.position="bottom",panel.background = element_rect(fill = 
 ```
 
 ### ELMENTOS EN SAVIA
+
+Para facilitar la ejecución de gráficos, se creará una función en la cual se especifique el dataframe a utilizar, la variedad de papa en cuestión, y la variable de interés.
+
+La libraría dplyr nos permite generar consultas dentro de un dataframe prviamente incorporado, y almacenarlas dentro de un nuevo dataframe el cual se trabajará.
 
 ```{r}
 library(dplyr)
@@ -89,7 +99,11 @@ grafico_variedad_102_K
 grafico_variedad_102_Ca
 ```
 
+Con esto, podemos definir inicialmente que el comportamiento del calcio no está claro. En este caso, el argumento de esto no puede ser revelado.
+
 ### 2) MODELO PESOS SECOS
+
+En este apartado, se tomarán datos de la producción de masa seca d las plantas, en estos tratamientos.
 
 ```{r}
 library(readxl)
@@ -101,7 +115,11 @@ head(datos_masa_seca)
 names(datos_masa_seca)
 ```
 
+Por cuestiones de independencia en el análisis, se realizará y ejecutará el código para cada variedad de manera independiente, a diferencia de las primeras gráficas ejecutadas en el prsente script.
+
 ### VARIEDAD 1
+
+Primero, se realiza una aproximación mdiante un gráfico de puntos, para comprender inicialmente el cmportamiento de la acumulaicón de biomasa.
 
 ```{r}
 library(dplyr)
@@ -121,9 +139,28 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATA
   tema
 ```
 
+En este estudio, se implementa el **modelo de gompertz**, ya que este modelo define la acumulación de biomasa en especies vegetales.
+
+Este modelo corresponde a una función sigmoidal, la cual describe la acumulaión de biomasa de forma lenta al inicio (baja síntesis de fotoasimilados) y al final del ciclo de vida (disminución de acumulación debido a la marchitez de la parte aérea de las plantas).
+
+Este es un caso especial de la **función logística**, y la modificación implementada en este estudio se trabaja para poblaciones y acumulación de biomasa. La fórmula implementada corresponde a:
+
+$$
+  y = y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
+$$
+
+En este modelo, se tiene:
+
+- **y0:** El valor inicial de la función. En este caso, no partimos de cero.
+- **ymax:** Es el límite de la función, es deir, su valor máximo.
+- **lag:** Es una fase inicial, en la cual no se genera acumulación de biomasa en la raíz, sino que se desarrolla tejido aéreo para la síntesis de fotoasimilados y retraslocación.
+- **k:** Se relaciona con la velocidad de crcimiento máxima alcanzada.
+
+Para evaluar el modelo, se utiliza el comando *nls*, el cual corresponde a la evaluación de modelos no lineales.
+
 ```{r}
 Gompertz <- function(x, y0, ymax, k, lag){
-  result<- y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
+  result<- y0 + (ymax)*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
   return(result)
 }
 
@@ -172,6 +209,8 @@ Gomp_0_1 <- nls(PESO_TOTAL_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag),
              start = list(y0=-7, ymax=1700, k=10, lag=1))
 ```
 
+Ahora, podemos determinar los parámetros que describen los modelos calculados para cada uno de los tratamientos.
+
 ```{r}
 coefs_100_1 <- coef(Gomp_100_1)
 y0_100_1 = coefs_100_1[1]
@@ -205,6 +244,17 @@ lag_0_1 = coefs_0_1[4]
 
 coefs_0_1
 ```
+
+Y finalmente, podemos determinar la significancia de cada estimador
+
+```{r}
+summary(Gomp_100_1)
+summary(Gomp_66_1)
+summary(Gomp_33_1)
+summary(Gomp_0_1)
+```
+
+Por último, para cada modelo, realizamos un gráfico en el que se muestren los puntos originales, y una curva con los puntos que predice el modelo, para cada día desde el día 0 hasta el día 150, el cual es genéricamente el final del ciclo productivo de estos cultivos.
 
 ```{r}
 DDS_LEVELS <- seq(0,150,by=1)
@@ -249,6 +299,8 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd = 2)
 legend("topleft",legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
+
+Ahora, con estos modelos, podemos determinar la acumulación de biomasa para un día de interés. Esto se ha realizado debido a que a la empresa le interezaba correlacionar estos valores modelados, con valores de contenido en savia que se tenían para fechas distintas.
 
 ```{r}
 pesos_savia_100_1 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_1,ymax_100_1,k_100_1,lag_100_1)
@@ -617,9 +669,13 @@ Tabla_pesos_savia_0_102
 
 ### 3) PESO SECO V.S. CONTENIDO EN SAVIA
 
+En este apartado, se realizará el modelamiento del comportamiento de nutientes en sabia, de acuerdo con los datos obtenidos a partir del modelo de gompertz para la acumulación de masa seca. Igualmente, se realiza independiente para cada elemento y variedad, con el fin de tener claridad sobre la información.
+
 # NO3
 
 # CPI 1
+
+Iniciamos generando los dataframes requeridos, concatenando la infromación ya modelada a partir de la función de gompertz, con los datos preexistentes sobre contenido en savia.
 
 ```{r}
 mccain_savia_0_1 <- mccain_savia %>%
@@ -738,6 +794,8 @@ Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
 Tabla_102
 ```
+
+Con esto, ya podemos generar gráficos, presentando información del comportamiento de nutrientes, y la acumulación de biomasa.
 
 # Gráficos
 

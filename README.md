@@ -1,4 +1,4 @@
-# PLant response to different fertilization - Solanum tuberosum
+# Plant response to different fertilization - Solanum tuberosum
 
 See .md document.
  

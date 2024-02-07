@@ -1,5 +1,5 @@
 Análisis de contenido de nutrientes en savia, y su relación con el
-rendimiento en plantas de Solnum tuberosum
+rendimiento en plantas de Solanum tuberosum
 ================
 true
 
@@ -536,6 +536,17 @@ summary(Gomp_0_1)
     ## 
     ## Number of iterations to convergence: 12 
     ## Achieved convergence tolerance: 3.561e-06
+
+En este caso, se puede observar que el error estandar del residuo tiende
+a 200. Sin embargo, se debe hacer la aclaración de que stos modelos
+están en una escala de más de 2.000 gramos, equivalente a un error del
+10%, por lo cual, describen los datos de forma óptima.
+
+Igualmente, hay que consderar que existen otros modelos de acumulaciónde
+biomasa, pro debido a la naturaleza de la de especie *tuberosum*, la
+cual seca su parte aérea al final de su ciclo, esta última etapa será la
+de menor llenado de tubérculos, ya que todos los fotoasimilados de la
+parte aérea se hbarán traslocado, y no se sintetizarán más.
 
 Por último, para cada modelo, realizamos un gráfico en el que se
 muestren los puntos originales, y una curva con los puntos que predice

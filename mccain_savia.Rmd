@@ -1,10 +1,5 @@
 ---
-output:
-  pdf_document:
-    keep_text: true
-    fig_caption: true
-    latex_engine: pdflatex
-    number_sections: true
+output: rmarkdown::github_document
 
 title: Análisis de contenido de nutrientes en savia, y su relación con el rendimiento en plantas de Solnum tuberosum
 

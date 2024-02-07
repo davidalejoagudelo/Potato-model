@@ -151,10 +151,10 @@ $$
 
 En este modelo, se tiene:
 
-- **y0:** El valor inicial de la función. En este caso, no partimos de cero.
-- **ymax:** Es el límite de la función, es deir, su valor máximo.
-- **lag:** Es una fase inicial, en la cual no se genera acumulación de biomasa en la raíz, sino que se desarrolla tejido aéreo para la síntesis de fotoasimilados y retraslocación.
-- **k:** Se relaciona con la velocidad de crcimiento máxima alcanzada.
+-   **y0:** El valor inicial de la función. En este caso, no partimos de cero.
+-   **ymax:** Es el límite de la función, es deir, su valor máximo.
+-   **lag:** Es una fase inicial, en la cual no se genera acumulación de biomasa en la raíz, sino que se desarrolla tejido aéreo para la síntesis de fotoasimilados y retraslocación.
+-   **k:** Se relaciona con la velocidad de crcimiento máxima alcanzada.
 
 Para evaluar el modelo, se utiliza el comando *nls*, el cual corresponde a la evaluación de modelos no lineales.
 
@@ -253,6 +253,10 @@ summary(Gomp_66_1)
 summary(Gomp_33_1)
 summary(Gomp_0_1)
 ```
+
+En este caso, se puede observar que el error estandar del residuo tiende a 200. Sin embargo, se debe hacer la aclaración de que stos modelos están en una escala de más de 2.000 gramos, equivalente a un error del 10%, por lo cual, describen los datos de forma óptima.
+
+Igualmente, hay que consderar que existen otros modelos de acumulaciónde biomasa, pro debido a la naturaleza de la de especie *tuberosum*, la cual seca su parte aérea al final de su ciclo, esta última etapa será la de menor llenado de tubérculos, ya que todos los fotoasimilados de la parte aérea se hbarán traslocado, y no se sintetizarán más.
 
 Por último, para cada modelo, realizamos un gráfico en el que se muestren los puntos originales, y una curva con los puntos que predice el modelo, para cada día desde el día 0 hasta el día 150, el cual es genéricamente el final del ciclo productivo de estos cultivos.
 

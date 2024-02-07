@@ -13,6 +13,10 @@ setwd("C:/Users/david/OneDrive/Escritorio/Personal/R")
 
 ### 1) CONTENIDO EN SAVIA EN EL TIEMPO
 
+Primero que todo, vamos a utilizar la información de elementos
+contenidos en savia, determinados en diferentes momentos para los
+tratamientos en cuestión.
+
 ``` r
 library(readxl)
 mccain_savia <- read_excel("C:/Users/david/OneDrive/Escritorio/Personal/R/mccain_savia.xlsx")
@@ -43,6 +47,11 @@ names(mccain_savia)
     ##  [6] "Repetición"   "Muestra"      "Ca"           "K"            "NO3"         
     ## [11] "MATERIA_SECA"
 
+Por cuestiones de estética, se realiza un primer apartado en el cual se
+definen los estándares de los gráficos que se generarán más adelante.
+
+En este caso, utilizaremos la librería ggplot2.
+
 ``` r
 library(ggplot2)
 
@@ -50,6 +59,14 @@ tema <-   theme(legend.position="bottom",panel.background = element_rect(fill = 
 ```
 
 ### ELMENTOS EN SAVIA
+
+Para facilitar la ejecución de gráficos, se creará una función en la
+cual se especifique el dataframe a utilizar, la variedad de papa en
+cuestión, y la variable de interés.
+
+La libraría dplyr nos permite generar consultas dentro de un dataframe
+prviamente incorporado, y almacenarlas dentro de un nuevo dataframe el
+cual se trabajará.
 
 ``` r
 library(dplyr)
@@ -212,7 +229,13 @@ grafico_variedad_102_Ca
 
 ![](mccain_savia_files/figure-gfm/unnamed-chunk-7-9.png)<!-- -->
 
+Con esto, podemos definir inicialmente que el comportamiento del calcio
+no está claro. En este caso, el argumento de esto no puede ser revelado.
+
 ### 2) MODELO PESOS SECOS
+
+En este apartado, se tomarán datos de la producción de masa seca d las
+plantas, en estos tratamientos.
 
 ``` r
 library(readxl)
@@ -240,7 +263,14 @@ names(datos_masa_seca)
     ## [4] "REPETICION"        "PESO_TOTAL"        "PESO_UNIDAD"      
     ## [7] "PESO_HA _(TON_HA)" "PROPORCION_TUB"    "REND_TUB_TON_HA"
 
+Por cuestiones de independencia en el análisis, se realizará y ejecutará
+el código para cada variedad de manera independiente, a diferencia de
+las primeras gráficas ejecutadas en el prsente script.
+
 ### VARIEDAD 1
+
+Primero, se realiza una aproximación mdiante un gráfico de puntos, para
+comprender inicialmente el cmportamiento de la acumulaicón de biomasa.
 
 ``` r
 library(dplyr)
@@ -266,9 +296,38 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATA
 
 ![](mccain_savia_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
+En este estudio, se implementa el **modelo de gompertz**, ya que este
+modelo define la acumulación de biomasa en especies vegetales.
+
+Este modelo corresponde a una función sigmoidal, la cual describe la
+acumulaión de biomasa de forma lenta al inicio (baja síntesis de
+fotoasimilados) y al final del ciclo de vida (disminución de acumulación
+debido a la marchitez de la parte aérea de las plantas).
+
+Este es un caso especial de la **función logística**, y la modificación
+implementada en este estudio se trabaja para poblaciones y acumulación
+de biomasa. La fórmula implementada corresponde a:
+
+$$
+  y = y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
+$$
+
+En este modelo, se tiene:
+
+- **y0:** El valor inicial de la función. En este caso, no partimos de
+  cero.
+- **ymax:** Es el límite de la función, es deir, su valor máximo.
+- **lag:** Es una fase inicial, en la cual no se genera acumulación de
+  biomasa en la raíz, sino que se desarrolla tejido aéreo para la
+  síntesis de fotoasimilados y retraslocación.
+- **k:** Se relaciona con la velocidad de crcimiento máxima alcanzada.
+
+Para evaluar el modelo, se utiliza el comando *nls*, el cual corresponde
+a la evaluación de modelos no lineales.
+
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
-  result<- y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
+  result<- y0 + (ymax)*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
   return(result)
 }
 
@@ -337,6 +396,9 @@ Gomp_0_1 <- nls(PESO_TOTAL_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag),
              start = list(y0=-7, ymax=1700, k=10, lag=1))
 ```
 
+Ahora, podemos determinar los parámetros que describen los modelos
+calculados para cada uno de los tratamientos.
+
 ``` r
 coefs_100_1 <- coef(Gomp_100_1)
 y0_100_1 = coefs_100_1[1]
@@ -389,6 +451,97 @@ coefs_0_1
     ##          y0        ymax           k         lag 
     ##    8.705103 1482.380971   61.599052   55.830652
 
+Y finalmente, podemos determinar la significancia de cada estimador
+
+``` r
+summary(Gomp_100_1)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_100_1 ~ Gompertz(DDS_100_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0      1.388    113.980   0.012     0.99    
+    ## ymax 2057.882    283.427   7.261 5.04e-07 ***
+    ## k      77.495     10.881   7.122 6.69e-07 ***
+    ## lag    57.722      7.782   7.417 3.68e-07 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 180.8 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 17 
+    ## Achieved convergence tolerance: 6.599e-06
+
+``` r
+summary(Gomp_66_1)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_66_1 ~ Gompertz(DDS_66_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     -38.24     171.28  -0.223 0.825587    
+    ## ymax  2387.36     502.42   4.752 0.000122 ***
+    ## k       74.55       9.93   7.507 3.07e-07 ***
+    ## lag     54.75      11.12   4.923 8.21e-05 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 201.1 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 13 
+    ## Achieved convergence tolerance: 3.945e-06
+
+``` r
+summary(Gomp_33_1)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_33_1 ~ Gompertz(DDS_33_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     -21.90     174.82  -0.125 0.901563    
+    ## ymax  2218.97     471.78   4.703 0.000136 ***
+    ## k       75.03      12.42   6.043 6.59e-06 ***
+    ## lag     55.71      11.67   4.773 0.000116 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 231.7 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 12 
+    ## Achieved convergence tolerance: 6.069e-06
+
+``` r
+summary(Gomp_0_1)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0      8.705    106.533   0.082    0.936    
+    ## ymax 1482.381    215.236   6.887 1.09e-06 ***
+    ## k      61.599     10.892   5.655 1.55e-05 ***
+    ## lag    55.831      9.007   6.198 4.70e-06 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 167.4 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 12 
+    ## Achieved convergence tolerance: 3.561e-06
+
+Por último, para cada modelo, realizamos un gráfico en el que se
+muestren los puntos originales, y una curva con los puntos que predice
+el modelo, para cada día desde el día 0 hasta el día 150, el cual es
+genéricamente el final del ciclo productivo de estos cultivos.
+
 ``` r
 DDS_LEVELS <- seq(0,150,by=1)
 
@@ -419,7 +572,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd = 2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -437,7 +590,12 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
 legend("topleft",legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+
+Ahora, con estos modelos, podemos determinar la acumulación de biomasa
+para un día de interés. Esto se ha realizado debido a que a la empresa
+le interezaba correlacionar estos valores modelados, con valores de
+contenido en savia que se tenían para fechas distintas.
 
 ``` r
 pesos_savia_100_1 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_1,ymax_100_1,k_100_1,lag_100_1)
@@ -545,7 +703,7 @@ ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = PESO_TOTAL_39, group = T
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -700,7 +858,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd = 2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -718,7 +876,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
 
 ``` r
 pesos_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -825,7 +983,7 @@ ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = PESO_TOTAL_102, gro
   ylim(c(0,3000))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ``` r
   ggtitle("") +
@@ -982,7 +1140,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
       lty=1, col="seagreen2")
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -999,7 +1157,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
 
 ``` r
 pesos_savia_100_102 <- 25.79*(c(36,45,53,61,70,78,84,91,98,105,115))-1258.36
@@ -1087,9 +1245,19 @@ Tabla_pesos_savia_0_102
 
 ### 3) PESO SECO V.S. CONTENIDO EN SAVIA
 
+En este apartado, se realizará el modelamiento del comportamiento de
+nutientes en sabia, de acuerdo con los datos obtenidos a partir del
+modelo de gompertz para la acumulación de masa seca. Igualmente, se
+realiza independiente para cada elemento y variedad, con el fin de tener
+claridad sobre la información.
+
 # NO3
 
 # CPI 1
+
+Iniciamos generando los dataframes requeridos, concatenando la
+infromación ya modelada a partir de la función de gompertz, con los
+datos preexistentes sobre contenido en savia.
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
@@ -1407,6 +1575,9 @@ Tabla_102
     ## 43  CIP 102 1449.59000 105 100% Fertilización  888.3333
     ## 44  CIP 102 1707.49000 115 100% Fertilización  529.0909
 
+Con esto, ya podemos generar gráficos, presentando información del
+comportamiento de nutrientes, y la acumulación de biomasa.
+
 # Gráficos
 
 ``` r
@@ -1432,7 +1603,7 @@ ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -1457,7 +1628,7 @@ ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-28-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-29-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -1482,7 +1653,7 @@ ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-28-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-29-3.png)<!-- -->
 
 # Ca
 
@@ -1829,7 +2000,7 @@ ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -1854,7 +2025,7 @@ ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-32-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-33-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -1879,7 +2050,7 @@ ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-32-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-33-3.png)<!-- -->
 
 # K
 
@@ -2226,7 +2397,7 @@ ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -2251,7 +2422,7 @@ ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-36-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-37-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -2276,7 +2447,7 @@ ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-36-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-37-3.png)<!-- -->
 
 ### 4) MODELO RENDIMIENTO
 
@@ -2304,7 +2475,7 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2459,7 +2630,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2477,7 +2648,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-40-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_1 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_1,ymax_100_1,k_100_1,lag_100_1)
@@ -2585,7 +2756,7 @@ ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, grou
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2740,7 +2911,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2758,7 +2929,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-46-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -2886,7 +3057,7 @@ ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 ``` r
 Cuadratica <- function(x,y0,a){
@@ -3033,7 +3204,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -3051,7 +3222,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-50-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-51-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_102 <-Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_102,a_100_102)
@@ -3486,7 +3657,7 @@ ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -3511,7 +3682,7 @@ ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATA
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-55-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-56-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -3536,7 +3707,7 @@ ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRAT
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-55-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-56-3.png)<!-- -->
 
 # Ca
 
@@ -3883,7 +4054,7 @@ ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -3908,7 +4079,7 @@ ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-59-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-60-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -3933,7 +4104,7 @@ ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-59-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-60-3.png)<!-- -->
 
 # K
 
@@ -4280,7 +4451,7 @@ ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -4305,7 +4476,7 @@ ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-63-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-64-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -4330,4 +4501,4 @@ ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-63-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-64-3.png)<!-- -->

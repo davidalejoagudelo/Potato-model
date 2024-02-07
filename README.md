@@ -1,4 +1,4 @@
-# Data_science - Solanum tuberosum
+# PLant response to different fertilization - Solanum tuberosum
 
 See .md document.
  

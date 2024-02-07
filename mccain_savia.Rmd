@@ -1,7 +1,7 @@
 ---
 output: rmarkdown::github_document
 
-title: Análisis de contenido de nutrientes en savia, y su relación con el rendimiento en plantas de Solnum tuberosum
+title: Análisis de contenido de nutrientes en savia, y su relación con el rendimiento en plantas de Solanum tuberosum
 
 author:
   name: David Alejandro Agudelo Castillo

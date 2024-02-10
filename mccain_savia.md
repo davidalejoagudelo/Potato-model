@@ -1,4 +1,4 @@
-Análisis de contenido de nutrientes en savia, y su relación con el
+Análisis del contenido de nutrientes en savia, y su relación con el
 rendimiento en plantas de Solanum tuberosum
 ================
 true
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8)
 setwd("C:/Users/david/OneDrive/Escritorio/Personal/R")
 ```
 
-### 1) CONTENIDO EN SAVIA EN EL TIEMPO
+# 1) CONTENIDO EN SAVIA EN EL TIEMPO
 
 Primero que todo, vamos a utilizar la información de elementos
 contenidos en savia, determinados en diferentes momentos para los
@@ -58,33 +58,20 @@ library(ggplot2)
 tema <-   theme(legend.position="bottom",panel.background = element_rect(fill = NA),panel.grid.major.y = element_line(colour = "grey90"),legend.key = element_rect(fill = "white"),axis.line = element_line(colour = "grey90"),legend.title = element_text(colour = "white"))
 ```
 
-### ELMENTOS EN SAVIA
+## ELMENTOS EN SAVIA
 
 Para facilitar la ejecución de gráficos, se creará una función en la
 cual se especifique el dataframe a utilizar, la variedad de papa en
-cuestión, y la variable de interés.
+cuestión, y la variable de interés. Eston se realiza con el fin de
+obtener un análisis exploratorio de la información suministrrada.
 
 La libraría dplyr nos permite generar consultas dentro de un dataframe
-prviamente incorporado, y almacenarlas dentro de un nuevo dataframe el
+previamente incorporado, y almacenarlas dentro de un nuevo dataframe el
 cual se trabajará.
 
 ``` r
 library(dplyr)
-```
 
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-# Define una función para simplificar el proceso de creación de gráficos
 crear_grafico <- function(datos, variedad, variable) {
   nombre_variable <- as.character(substitute(variable))  # Obtener el nombre de la variable
   
@@ -109,71 +96,16 @@ crear_grafico <- function(datos, variedad, variable) {
     tema
 }
 
-# Llamar a la función para cada variedad
 grafico_variedad_1_NO3 <- crear_grafico(mccain_savia, "CIP 1", NO3)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-    ## ℹ Please use `linewidth` instead.
-
-``` r
 grafico_variedad_1_K <- crear_grafico(mccain_savia, "CIP 1", K)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_1_Ca <- crear_grafico(mccain_savia, "CIP 1", Ca)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_39_NO3 <- crear_grafico(mccain_savia, "CIP 39", NO3)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_39_K <- crear_grafico(mccain_savia, "CIP 39", K)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_39_Ca <- crear_grafico(mccain_savia, "CIP 39", Ca)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_102_NO3 <- crear_grafico(mccain_savia, "CIP 102", NO3)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_102_K <- crear_grafico(mccain_savia, "CIP 102", K)
-```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
-
-``` r
 grafico_variedad_102_Ca <- crear_grafico(mccain_savia, "CIP 102", Ca)
 ```
-
-    ## `summarise()` has grouped output by 'DDS', 'Tratamiento'. You can override
-    ## using the `.groups` argument.
 
 ``` r
 grafico_variedad_1_NO3
@@ -232,9 +164,9 @@ grafico_variedad_102_Ca
 Con esto, podemos definir inicialmente que el comportamiento del calcio
 no está claro. En este caso, el argumento de esto no puede ser revelado.
 
-### 2) MODELO PESOS SECOS
+# 2) MODELO PESOS SECOS
 
-En este apartado, se tomarán datos de la producción de masa seca d las
+En este apartado, se tomarán datos de la producción de masa seca de las
 plantas, en estos tratamientos.
 
 ``` r
@@ -255,6 +187,9 @@ head(datos_masa_seca)
     ## # … with abbreviated variable names ¹​REPETICION, ²​PESO_TOTAL, ³​PESO_UNIDAD,
     ## #   ⁴​`PESO_HA _(TON_HA)`, ⁵​PROPORCION_TUB, ⁶​REND_TUB_TON_HA
 
+Igualmente, se realiza un análisis exploratorion del dataframe, para
+obtener las variables.
+
 ``` r
 names(datos_masa_seca)
 ```
@@ -264,12 +199,12 @@ names(datos_masa_seca)
     ## [7] "PESO_HA _(TON_HA)" "PROPORCION_TUB"    "REND_TUB_TON_HA"
 
 Por cuestiones de independencia en el análisis, se realizará y ejecutará
-el código para cada variedad de manera independiente, a diferencia de
-las primeras gráficas ejecutadas en el prsente script.
+por separado el código para cada variedad, a diferencia de las primeras
+gráficas ejecutadas en el prsente script.
 
-### VARIEDAD 1
+## VARIEDAD 1
 
-Primero, se realiza una aproximación mdiante un gráfico de puntos, para
+Primero, se realiza una aproximación mediante un gráfico de puntos, para
 comprender inicialmente el cmportamiento de la acumulaicón de biomasa.
 
 ``` r
@@ -281,13 +216,9 @@ masa_seca_1 <- datos_masa_seca %>%
   summarise(PESO_TOTAL=mean(PESO_TOTAL,na.rm = T),
             DDS=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
 
-``` r
-ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATAMIENTO., colour = TRATAMIENTO.)) +
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
   ggtitle("") +
@@ -296,8 +227,9 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATA
 
 ![](mccain_savia_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-En este estudio, se implementa el **modelo de gompertz**, ya que este
-modelo define la acumulación de biomasa en especies vegetales.
+En este estudio, se implementa el **modelo de gompertz**, ajustado con
+respecto a la función original, ya que este define la acumulación de
+biomasa en especies vegetales.
 
 Este modelo corresponde a una función sigmoidal, la cual describe la
 acumulaión de biomasa de forma lenta al inicio (baja síntesis de
@@ -306,11 +238,7 @@ debido a la marchitez de la parte aérea de las plantas).
 
 Este es un caso especial de la **función logística**, y la modificación
 implementada en este estudio se trabaja para poblaciones y acumulación
-de biomasa. La fórmula implementada corresponde a:
-
-$$
-  y = y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
-$$
+de biomasa.
 
 En este modelo, se tiene:
 
@@ -337,12 +265,7 @@ masa_seca_100_1 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_100_1=PESO_TOTAL,
             DDS_100_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_100_1 <- nls(PESO_TOTAL_100_1 ~ Gompertz(DDS_100_1, y0, ymax, k, lag),
              data=masa_seca_100_1,
              start = list(y0=15, ymax=2500, k=10, lag=1))
@@ -353,12 +276,7 @@ masa_seca_66_1 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_66_1=PESO_TOTAL,
             DDS_66_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_66_1 <- nls(PESO_TOTAL_66_1 ~ Gompertz(DDS_66_1, y0, ymax, k, lag),
              data=masa_seca_66_1,
              start = list(y0=31, ymax=2100, k=15, lag=1))
@@ -369,12 +287,7 @@ masa_seca_33_1 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_33_1=PESO_TOTAL,
             DDS_33_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_33_1 <- nls(PESO_TOTAL_33_1 ~ Gompertz(DDS_33_1, y0, ymax, k, lag),
              data=masa_seca_33_1,
              start = list(y0=21, ymax=2200, k=15, lag=1))
@@ -385,12 +298,7 @@ masa_seca_0_1 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_0_1=PESO_TOTAL,
             DDS_0_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_0_1 <- nls(PESO_TOTAL_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag),
              data=masa_seca_0_1,
              start = list(y0=-7, ymax=1700, k=10, lag=1))
@@ -451,7 +359,7 @@ coefs_0_1
     ##          y0        ymax           k         lag 
     ##    8.705103 1482.380971   61.599052   55.830652
 
-Y finalmente, podemos determinar la significancia de cada estimador
+Y finalmente, podemos determinar la significancia de cada estimador.
 
 ``` r
 summary(Gomp_100_1)
@@ -538,15 +446,15 @@ summary(Gomp_0_1)
     ## Achieved convergence tolerance: 3.561e-06
 
 En este caso, se puede observar que el error estandar del residuo tiende
-a 200. Sin embargo, se debe hacer la aclaración de que stos modelos
+a 200. Sin embargo, se debe hacer la aclaración de que estos modelos
 están en una escala de más de 2.000 gramos, equivalente a un error del
 10%, por lo cual, describen los datos de forma óptima.
 
 Igualmente, hay que consderar que existen otros modelos de acumulaciónde
-biomasa, pro debido a la naturaleza de la de especie *tuberosum*, la
+biomasa, pero debido a la naturaleza de la de especie *tuberosum*, la
 cual seca su parte aérea al final de su ciclo, esta última etapa será la
 de menor llenado de tubérculos, ya que todos los fotoasimilados de la
-parte aérea se hbarán traslocado, y no se sintetizarán más.
+parte aérea se habrán traslocado, y no se sintetizarán más.
 
 Por último, para cada modelo, realizamos un gráfico en el que se
 muestren los puntos originales, y una curva con los puntos que predice
@@ -692,7 +600,13 @@ Tabla_pesos_savia_0_1
     ## 10      1055.30552     105 0% Fertilización
     ## 11      1187.47471     115 0% Fertilización
 
-### VARIEDAD 39
+Con esto, se tiene la información requerida para estimar la relación
+entre la acumulación de biomasa, y el contenido de nutrientes en savia.
+
+Desde este punto, se realiza el mismo procedimiento para las otras dos
+variedades.
+
+## VARIEDAD 39
 
 ``` r
 masa_seca_39 <- datos_masa_seca %>% 
@@ -701,12 +615,7 @@ masa_seca_39 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_39=mean(PESO_TOTAL,na.rm = T),
             DDS_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = PESO_TOTAL_39, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
@@ -728,12 +637,7 @@ masa_seca_100_39 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_100_39=PESO_TOTAL,
             DDS_100_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_100_39 <- nls(PESO_TOTAL_100_39 ~ Gompertz(DDS_100_39, y0, ymax, k, lag),
              data=masa_seca_100_39,
              start = list(y0=20, ymax=2500, k=15, lag=1))
@@ -744,12 +648,7 @@ masa_seca_66_39 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_66_39=PESO_TOTAL,
             DDS_66_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_66_39 <- nls(PESO_TOTAL_66_39 ~ Gompertz(DDS_66_39, y0, ymax, k, lag),
              data=masa_seca_66_39,
              start = list(y0=27, ymax=2000, k=15, lag=1))
@@ -760,12 +659,7 @@ masa_seca_33_39 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_33_39=PESO_TOTAL,
             DDS_33_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_33_39 <- nls(PESO_TOTAL_33_39 ~ Gompertz(DDS_33_39, y0, ymax, k, lag),
              data=masa_seca_33_39,
              start = list(y0=15, ymax=1500, k=15, lag=1))
@@ -776,12 +670,7 @@ masa_seca_0_39 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_0_39=PESO_TOTAL,
             DDS_0_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_0_39 <- nls(PESO_TOTAL_0_39 ~ Gompertz(DDS_0_39, y0, ymax, k, lag),
              data=masa_seca_0_39,
              start = list(y0=10, ymax=1400, k=15, lag=1))
@@ -840,6 +729,90 @@ coefs_0_39
     ##   42.05877 1542.08124   67.81940   64.49388
 
 ``` r
+summary(Gomp_100_39)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_100_39 ~ Gompertz(DDS_100_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     -3.605    116.798  -0.031    0.976    
+    ## ymax 2387.515    317.300   7.524 2.96e-07 ***
+    ## k      89.276     11.979   7.452 3.42e-07 ***
+    ## lag    59.499      7.126   8.350 5.98e-08 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 197.2 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 15 
+    ## Achieved convergence tolerance: 7.827e-06
+
+``` r
+summary(Gomp_66_39)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_66_39 ~ Gompertz(DDS_66_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     -5.315     90.960  -0.058    0.954    
+    ## ymax 2133.046    223.812   9.531 7.06e-09 ***
+    ## k      78.101      7.747  10.081 2.76e-09 ***
+    ## lag    56.431      5.999   9.407 8.75e-09 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 133.6 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 12 
+    ## Achieved convergence tolerance: 4.102e-06
+
+``` r
+summary(Gomp_33_39)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_33_39 ~ Gompertz(DDS_33_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     59.905     67.308   0.890    0.384    
+    ## ymax 1470.756    126.603  11.617 2.41e-10 ***
+    ## k      85.966     17.310   4.966 7.43e-05 ***
+    ## lag    65.639      5.364  12.238 9.60e-11 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 160.7 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 16 
+    ## Achieved convergence tolerance: 8.113e-06
+
+``` r
+summary(Gomp_0_39)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_0_39 ~ Gompertz(DDS_0_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     42.059     82.442   0.510    0.616    
+    ## ymax 1542.081    206.916   7.453 3.42e-07 ***
+    ## k      67.819     13.230   5.126 5.15e-05 ***
+    ## lag    64.494      7.344   8.782 2.68e-08 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 177.9 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 18 
+    ## Achieved convergence tolerance: 5.989e-06
+
+``` r
 DDS_LEVELS <- seq(0,150,by=1)
 
 par(mfrow=c(2,2))
@@ -869,7 +842,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd = 2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -887,7 +860,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
 
 ``` r
 pesos_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -973,7 +946,7 @@ Tabla_pesos_savia_0_39
     ## 10       1039.74334      105 0% Fertilización
     ## 11       1210.96189      115 0% Fertilización
 
-### VARIEDAD 102
+## VARIEDAD 102
 
 ``` r
 masa_seca_102 <- datos_masa_seca %>% 
@@ -982,30 +955,25 @@ masa_seca_102 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_102=mean(PESO_TOTAL,na.rm = T),
             DDS_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
-ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = PESO_TOTAL_102, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_102, aes(x=DDS, y = PESO_TOTAL_102, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
-  ylim(c(0,3000))
-```
-
-![](mccain_savia_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
-
-``` r
+  ylim(c(0,3000)) +
   ggtitle("") +
   tema
 ```
 
-    ## NULL
+![](mccain_savia_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
   result<- y0 + ymax*exp(-exp(k*(lag-x)/(ymax-y0) + 1))
+  return(result)
+}
+
+Cuadratica <- function(x,y0,a){
+  result<- (y0 + a*x^3)
   return(result)
 }
 
@@ -1015,14 +983,10 @@ masa_seca_100_102 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_100_102=PESO_TOTAL,
             DDS_100_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
-Gomp_100_102 <- lm(PESO_TOTAL_100_102~DDS_100_102,
-             data=masa_seca_100_102)
+Cuad_100_102 <- nls(PESO_TOTAL_100_102~Cuadratica(DDS_100_102,y0,a),
+             data=masa_seca_100_102,
+             start = list(y0=0,a=1))
 
 masa_seca_66_102 <- datos_masa_seca %>%
   filter(VARIEDAD =="102",TRATAMIENTO.=="66% Fertilización")%>%
@@ -1030,12 +994,7 @@ masa_seca_66_102 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_66_102=PESO_TOTAL,
             DDS_66_102=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_66_102 <- nls(PESO_TOTAL_66_102 ~ Gompertz(DDS_66_102, y0, ymax, k, lag),
              data=masa_seca_66_102,
              start = list(y0=20, ymax=3000, k=15, lag=1))
@@ -1046,12 +1005,7 @@ masa_seca_33_102 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_33_102=PESO_TOTAL,
             DDS_33_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_33_102 <- nls(PESO_TOTAL_33_102 ~ Gompertz(DDS_33_102, y0, ymax, k, lag),
              data=masa_seca_33_102,
              start = list(y0=0, ymax=2200, k=15, lag=1))
@@ -1062,27 +1016,22 @@ masa_seca_0_102 <- datos_masa_seca %>%
   summarise(PESO_TOTAL_0_102=PESO_TOTAL,
             DDS_0_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_0_102 <- nls(PESO_TOTAL_0_102 ~ Gompertz(DDS_0_102, y0, ymax, k, lag),
              data=masa_seca_0_102,
              start = list(y0=20, ymax=1700, k=10, lag=1))
 ```
 
 ``` r
-coefs_100_102 <- coef(Gomp_100_102)
-b_100_102 = coefs_100_102[1]
-m_100_102=coefs_100_102[2]
+coefs_100_102 <- coef(Cuad_100_102)
+y0_100_102 = coefs_100_102[1]
+a_100_102=coefs_100_102[2]
 
 coefs_100_102
 ```
 
-    ## (Intercept) DDS_100_102 
-    ## -1258.36217    25.79455
+    ##           y0            a 
+    ## 1.396666e+02 8.650325e-04
 
 ``` r
 coefs_66_102 <- coef(Gomp_66_102)
@@ -1124,13 +1073,97 @@ coefs_0_102
     ##   10.36070 1723.15044   60.21911   57.65603
 
 ``` r
+summary(Cuad_100_102)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_100_102 ~ Cuadratica(DDS_100_102, y0, a)
+    ## 
+    ## Parameters:
+    ##     Estimate Std. Error t value Pr(>|t|)    
+    ## y0 1.397e+02  6.941e+01   2.012   0.0566 .  
+    ## a  8.650e-04  4.495e-05  19.244 2.98e-15 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 231.2 on 22 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 1 
+    ## Achieved convergence tolerance: 3.037e-08
+
+``` r
+summary(Gomp_66_102)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_66_102 ~ Gompertz(DDS_66_102, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    -45.175    122.627  -0.368    0.716    
+    ## ymax 3912.935    691.082   5.662 1.53e-05 ***
+    ## k      97.882      5.665  17.278 1.73e-13 ***
+    ## lag    60.508      5.834  10.371 1.71e-09 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 146.9 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 11 
+    ## Achieved convergence tolerance: 1.425e-06
+
+``` r
+summary(Gomp_33_102)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_33_102 ~ Gompertz(DDS_33_102, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0   -125.144    234.405  -0.534  0.59931    
+    ## ymax 2446.641    782.804   3.125  0.00533 ** 
+    ## k      55.657      4.251  13.093 2.87e-11 ***
+    ## lag    45.639     16.969   2.689  0.01410 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 124 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 9 
+    ## Achieved convergence tolerance: 1.519e-06
+
+``` r
+summary(Gomp_0_102)
+```
+
+    ## 
+    ## Formula: PESO_TOTAL_0_102 ~ Gompertz(DDS_0_102, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0     10.361    115.423   0.090    0.929    
+    ## ymax 1723.150    316.399   5.446 2.49e-05 ***
+    ## k      60.219      9.651   6.240 4.29e-06 ***
+    ## lag    57.656      9.890   5.829 1.06e-05 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 173.5 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 13 
+    ## Achieved convergence tolerance: 5.035e-06
+
+``` r
 DDS_LEVELS <- seq(0,150,by=1)
 
 par(mfrow=c(2,2))
 
+pred <- predict(Cuad_100_102, list(x = DDS_LEVELS))
 plot(PESO_TOTAL_100_102~DDS_100_102, data=masa_seca_100_102, xlim=c(0,150), ylim=c(0,3000),
      xlab="DDS", ylab="Peso total")
-abline(Gomp_100_102, col = "cadetblue3")
+lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_100_102, a_100_102),
+      lty=1, col="cadetblue3", lwd=2)
 
 pred <- predict(Gomp_66_102, list(x=DDS_LEVELS))
 plot(PESO_TOTAL_66_102~DDS_66_102, data=masa_seca_66_102, xlim=c(0,150), ylim=c(0,3000),
@@ -1151,14 +1184,15 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
       lty=1, col="seagreen2")
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
 
 plot(PESO_TOTAL_102~DDS, data=masa_seca_102, xlim=c(0,150), ylim=c(0,3000),
      xlab="DDS", ylab="Peso total (g)")
-abline(Gomp_100_102, col = "cadetblue3", lwd = 2)
+lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_100_102, a_100_102),
+      lty=1, col="cadetblue3", lwd=2)
 lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_66_102, ymax_66_102, k_66_102, lag_66_102),
       lty=1, col="cadetblue2", lwd = 2)
 lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_33_102, ymax_33_102, k_33_102, lag_33_102),
@@ -1168,10 +1202,10 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
 
 ``` r
-pesos_savia_100_102 <- 25.79*(c(36,45,53,61,70,78,84,91,98,105,115))-1258.36
+pesos_savia_100_102 <- Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_102,a_100_102)
 DDS_100_102 <- c(36,45,53,61,70,78,84,91,98,105,115)
 TRATAMIENTO_100_102 <- rep("100% Fertilización",11)
 Tabla_pesos_savia_100_102 <- data.frame(pesos_savia_100_102,DDS_100_102,TRATAMIENTO_100_102)
@@ -1179,17 +1213,17 @@ Tabla_pesos_savia_100_102
 ```
 
     ##    pesos_savia_100_102 DDS_100_102 TRATAMIENTO_100_102
-    ## 1              -329.92          36  100% Fertilización
-    ## 2               -97.81          45  100% Fertilización
-    ## 3               108.51          53  100% Fertilización
-    ## 4               314.83          61  100% Fertilización
-    ## 5               546.94          70  100% Fertilización
-    ## 6               753.26          78  100% Fertilización
-    ## 7               908.00          84  100% Fertilización
-    ## 8              1088.53          91  100% Fertilización
-    ## 9              1269.06          98  100% Fertilización
-    ## 10             1449.59         105  100% Fertilización
-    ## 11             1707.49         115  100% Fertilización
+    ## 1             180.0256          36  100% Fertilización
+    ## 2             218.4927          45  100% Fertilización
+    ## 3             268.4501          53  100% Fertilización
+    ## 4             336.0126          61  100% Fertilización
+    ## 5             436.3728          70  100% Fertilización
+    ## 6             550.1695          78  100% Fertilización
+    ## 7             652.3749          84  100% Fertilización
+    ## 8             791.5300          91  100% Fertilización
+    ## 9             953.8283          98  100% Fertilización
+    ## 10           1141.0499         105  100% Fertilización
+    ## 11           1455.2730         115  100% Fertilización
 
 ``` r
 pesos_savia_66_102 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_66_102,ymax_66_102,k_66_102,lag_66_102)
@@ -1254,7 +1288,7 @@ Tabla_pesos_savia_0_102
     ## 10        1040.45009       105  0% Fertilización
     ## 11        1210.16723       115  0% Fertilización
 
-### 3) PESO SECO V.S. CONTENIDO EN SAVIA
+# 3) PESO SECO V.S. CONTENIDO EN SAVIA
 
 En este apartado, se realizará el modelamiento del comportamiento de
 nutientes en sabia, de acuerdo con los datos obtenidos a partir del
@@ -1262,9 +1296,9 @@ modelo de gompertz para la acumulación de masa seca. Igualmente, se
 realiza independiente para cada elemento y variedad, con el fin de tener
 claridad sobre la información.
 
-# NO3
+## NO3
 
-# CPI 1
+### CPI 1
 
 Iniciamos generando los dataframes requeridos, concatenando la
 infromación ya modelada a partir de la función de gompertz, con los
@@ -1275,12 +1309,7 @@ mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_pesos_savia_0_1, mccain_savia_0_1$NO3)
 colnames(Tabla_0_1) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1288,12 +1317,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_pesos_savia_33_1, mccain_savia_33_1$NO3)
 colnames(Tabla_33_1) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1301,12 +1325,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_pesos_savia_66_1, mccain_savia_66_1$NO3)
 colnames(Tabla_66_1) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1314,79 +1333,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_pesos_savia_100_1, mccain_savia_100_1$NO3)
 colnames(Tabla_100_1) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad        Peso DDS        Tratamiento      NO3
-    ## 1     CIP 1   11.633014  36   0% Fertilización 9900.000
-    ## 2     CIP 1   29.333988  45   0% Fertilización 4483.333
-    ## 3     CIP 1   78.230695  53   0% Fertilización 6450.000
-    ## 4     CIP 1  174.600433  61   0% Fertilización 5841.667
-    ## 5     CIP 1  338.347401  70   0% Fertilización 6583.333
-    ## 6     CIP 1  514.089312  78   0% Fertilización 6008.333
-    ## 7     CIP 1  650.338071  84   0% Fertilización 5700.000
-    ## 8     CIP 1  802.196612  91   0% Fertilización 6358.333
-    ## 9     CIP 1  938.516243  98   0% Fertilización 2508.333
-    ## 10    CIP 1 1055.305518 105   0% Fertilización 2266.667
-    ## 11    CIP 1 1187.474711 115   0% Fertilización 2250.000
-    ## 12    CIP 1  -10.351211  36  33% Fertilización 9900.000
-    ## 13    CIP 1   23.456322  45  33% Fertilización 4041.667
-    ## 14    CIP 1   91.243887  53  33% Fertilización 5725.000
-    ## 15    CIP 1  205.789319  61  33% Fertilización 6250.000
-    ## 16    CIP 1  389.815829  70  33% Fertilización 7558.333
-    ## 17    CIP 1  589.739866  78  33% Fertilización 6658.333
-    ## 18    CIP 1  751.404170  84  33% Fertilización 5333.333
-    ## 19    CIP 1  941.925588  91  33% Fertilización 4583.333
-    ## 20    CIP 1 1125.362599  98  33% Fertilización 3158.333
-    ## 21    CIP 1 1294.896575 105  33% Fertilización 2325.000
-    ## 22    CIP 1 1505.672254 115  33% Fertilización 2444.444
-    ## 23    CIP 1  -19.315572  36  66% Fertilización 9900.000
-    ## 24    CIP 1   22.671929  45  66% Fertilización 4400.000
-    ## 25    CIP 1   97.274387  53  66% Fertilización 6025.000
-    ## 26    CIP 1  215.020641  61  66% Fertilización 5758.333
-    ## 27    CIP 1  397.285003  70  66% Fertilización 7208.333
-    ## 28    CIP 1  592.827004  78  66% Fertilización 6583.333
-    ## 29    CIP 1  751.315634  84  66% Fertilización 6391.667
-    ## 30    CIP 1  939.894055  91  66% Fertilización 6575.000
-    ## 31    CIP 1 1124.303615  98  66% Fertilización 3008.333
-    ## 32    CIP 1 1298.049325 105  66% Fertilización 3475.000
-    ## 33    CIP 1 1519.816049 115  66% Fertilización 2180.000
-    ## 34    CIP 1    5.721753  36 100% Fertilización 9900.000
-    ## 35    CIP 1   26.897839  45 100% Fertilización 4525.000
-    ## 36    CIP 1   81.363913  53 100% Fertilización 5708.333
-    ## 37    CIP 1  187.619445  61 100% Fertilización 5550.000
-    ## 38    CIP 1  373.049929  70 100% Fertilización 6775.000
-    ## 39    CIP 1  581.612147  78 100% Fertilización 6258.333
-    ## 40    CIP 1  751.037173  84 100% Fertilización 5191.667
-    ## 41    CIP 1  948.807045  91 100% Fertilización 5783.333
-    ## 42    CIP 1 1135.484281  98 100% Fertilización 4541.667
-    ## 43    CIP 1 1303.498509 105 100% Fertilización 4150.000
-    ## 44    CIP 1 1504.723028 115 100% Fertilización 2922.222
+    ##   Variedad      Peso DDS      Tratamiento      NO3
+    ## 1    CIP 1  11.63301  36 0% Fertilización 9900.000
+    ## 2    CIP 1  29.33399  45 0% Fertilización 4483.333
+    ## 3    CIP 1  78.23070  53 0% Fertilización 6450.000
+    ## 4    CIP 1 174.60043  61 0% Fertilización 5841.667
+    ## 5    CIP 1 338.34740  70 0% Fertilización 6583.333
+    ## 6    CIP 1 514.08931  78 0% Fertilización 6008.333
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_pesos_savia_0_39, mccain_savia_0_39$NO3)
 colnames(Tabla_0_39) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1394,12 +1365,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_pesos_savia_33_39, mccain_savia_33_39$NO3)
 colnames(Tabla_33_39) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1407,12 +1373,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_pesos_savia_66_39, mccain_savia_66_39$NO3)
 colnames(Tabla_66_39) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1420,79 +1381,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_pesos_savia_100_39, mccain_savia_100_39$NO3)
 colnames(Tabla_100_39) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad         Peso DDS        Tratamiento      NO3
-    ## 1    CIP 39   42.1394663  36   0% Fertilización 9825.000
-    ## 2    CIP 39   44.2368570  45   0% Fertilización 8166.667
-    ## 3    CIP 39   58.0205521  53   0% Fertilización 8325.000
-    ## 4    CIP 39  105.9662014  61   0% Fertilización 8125.000
-    ## 5    CIP 39  227.2986097  70   0% Fertilización 6316.667
-    ## 6    CIP 39  394.4899459  78   0% Fertilización 7858.333
-    ## 7    CIP 39  542.5294729  84   0% Fertilización 7650.000
-    ## 8    CIP 39  721.2125136  91   0% Fertilización 5933.333
-    ## 9    CIP 39  890.4315709  98   0% Fertilización 6000.000
-    ## 10   CIP 39 1039.7433434 105   0% Fertilización 4058.333
-    ## 11   CIP 39 1210.9618919 115   0% Fertilización 4375.000
-    ## 12   CIP 39   59.9055045  36  33% Fertilización 9508.333
-    ## 13   CIP 39   60.0090792  45  33% Fertilización 7866.667
-    ## 14   CIP 39   64.0502374  53  33% Fertilización 7958.333
-    ## 15   CIP 39   99.8393649  61  33% Fertilización 8108.333
-    ## 16   CIP 39  242.9110476  70  33% Fertilización 7100.000
-    ## 17   CIP 39  468.8405151  78  33% Fertilización 8316.667
-    ## 18   CIP 39  665.0713449  84  33% Fertilización 7433.333
-    ## 19   CIP 39  883.6405011  91  33% Fertilización 7108.333
-    ## 20   CIP 39 1067.3069660  98  33% Fertilización 6383.333
-    ## 21   CIP 39 1208.7596488 105  33% Fertilización 5066.667
-    ## 22   CIP 39 1345.8212611 115  33% Fertilización 5022.222
-    ## 23   CIP 39    1.5913392  36  66% Fertilización 9375.000
-    ## 24   CIP 39   29.0999531  45  66% Fertilización 7166.667
-    ## 25   CIP 39   92.6010633  53  66% Fertilización 8133.333
-    ## 26   CIP 39  208.4335186  61  66% Fertilización 7491.667
-    ## 27   CIP 39  401.8777758  70  66% Fertilización 6491.667
-    ## 28   CIP 39  614.1624844  78  66% Fertilización 8808.333
-    ## 29   CIP 39  784.8137143  84  66% Fertilización 7908.333
-    ## 30   CIP 39  983.2361155  91  66% Fertilización 7308.333
-    ## 31   CIP 39 1170.5280754  98  66% Fertilización 6991.667
-    ## 32   CIP 39 1339.6180951 105  66% Fertilización 5391.667
-    ## 33   CIP 39 1543.4508064 115  66% Fertilización 5837.500
-    ## 34   CIP 39   -0.1428543  36 100% Fertilización 8550.000
-    ## 35   CIP 39   18.7542208  45 100% Fertilización 7066.667
-    ## 36   CIP 39   71.0799227  53 100% Fertilización 6675.000
-    ## 37   CIP 39  179.1064577  61 100% Fertilización 7491.667
-    ## 38   CIP 39  376.8636375  70 100% Fertilización 6341.667
-    ## 39   CIP 39  607.7237456  78 100% Fertilización 8466.667
-    ## 40   CIP 39  799.9629919  84 100% Fertilización 8100.000
-    ## 41   CIP 39 1028.6597073  91 100% Fertilización 6875.000
-    ## 42   CIP 39 1248.2202203  98 100% Fertilización 7091.667
-    ## 43   CIP 39 1448.6200148 105 100% Fertilización 5308.333
-    ## 44   CIP 39 1691.9380392 115 100% Fertilización 6666.667
+    ##   Variedad      Peso DDS      Tratamiento      NO3
+    ## 1   CIP 39  42.13947  36 0% Fertilización 9825.000
+    ## 2   CIP 39  44.23686  45 0% Fertilización 8166.667
+    ## 3   CIP 39  58.02055  53 0% Fertilización 8325.000
+    ## 4   CIP 39 105.96620  61 0% Fertilización 8125.000
+    ## 5   CIP 39 227.29861  70 0% Fertilización 6316.667
+    ## 6   CIP 39 394.48995  78 0% Fertilización 7858.333
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_pesos_savia_0_102, mccain_savia_0_102$NO3)
 colnames(Tabla_0_102) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1500,12 +1413,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_pesos_savia_33_102, mccain_savia_33_102$NO3)
 colnames(Tabla_33_102) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1513,12 +1421,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_pesos_savia_66_102, mccain_savia_66_102$NO3)
 colnames(Tabla_66_102) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
@@ -1526,70 +1429,27 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_pesos_savia_100_102, mccain_savia_100_102$NO3)
 colnames(Tabla_100_102) <- c('Variedad','Peso','DDS','Tratamiento','NO3')
 
 Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad       Peso DDS        Tratamiento       NO3
-    ## 1   CIP 102   15.47156  36   0% Fertilización 9750.0000
-    ## 2   CIP 102   35.14470  45   0% Fertilización 5816.6667
-    ## 3   CIP 102   80.47700  53   0% Fertilización 7075.0000
-    ## 4   CIP 102  164.08212  61   0% Fertilización 6266.6667
-    ## 5   CIP 102  306.45962  70   0% Fertilización 5491.6667
-    ## 6   CIP 102  466.36300  78   0% Fertilización 3816.6667
-    ## 7   CIP 102  597.54201  84   0% Fertilización 1775.0000
-    ## 8   CIP 102  752.99450  91   0% Fertilización 1533.3333
-    ## 9   CIP 102  902.68763  98   0% Fertilización 1010.8333
-    ## 10  CIP 102 1040.45009 105   0% Fertilización  745.0000
-    ## 11  CIP 102 1210.16723 115   0% Fertilización 1197.7778
-    ## 12  CIP 102  -39.20201  36  33% Fertilización 9741.6667
-    ## 13  CIP 102   30.30834  45  33% Fertilización 5450.0000
-    ## 14  CIP 102  115.78214  53  33% Fertilización 6783.3333
-    ## 15  CIP 102  223.12919  61  33% Fertilización 6175.0000
-    ## 16  CIP 102  366.62264  70  33% Fertilización 5091.6667
-    ## 17  CIP 102  509.50459  78  33% Fertilización 5291.6667
-    ## 18  CIP 102  622.84645  84  33% Fertilización 2833.3333
-    ## 19  CIP 102  758.43565  91  33% Fertilización 2841.6667
-    ## 20  CIP 102  894.44442  98  33% Fertilización 1150.8333
-    ## 21  CIP 102 1027.94633 105  33% Fertilización  779.1667
-    ## 22  CIP 102 1209.72932 115  33% Fertilización  924.0000
-    ## 23  CIP 102  -18.36093  36  66% Fertilización 9641.6667
-    ## 24  CIP 102   27.29990  45  66% Fertilización 5475.0000
-    ## 25  CIP 102  103.12089  53  66% Fertilización 6908.3333
-    ## 26  CIP 102  221.66948  61  66% Fertilización 5575.0000
-    ## 27  CIP 102  410.82682  70  66% Fertilización 5066.6667
-    ## 28  CIP 102  625.52981  78  66% Fertilización 4391.6667
-    ## 29  CIP 102  810.19444  84  66% Fertilización 3416.6667
-    ## 30  CIP 102 1044.04849  91  66% Fertilización 2133.3333
-    ## 31  CIP 102 1289.56362  98  66% Fertilización 1697.5000
-    ## 32  CIP 102 1538.41722 105  66% Fertilización  876.6667
-    ## 33  CIP 102 1885.52322 115  66% Fertilización 1086.2500
-    ## 34  CIP 102 -329.92000  36 100% Fertilización 9575.0000
-    ## 35  CIP 102  -97.81000  45 100% Fertilización 4975.0000
-    ## 36  CIP 102  108.51000  53 100% Fertilización 6741.6667
-    ## 37  CIP 102  314.83000  61 100% Fertilización 5841.6667
-    ## 38  CIP 102  546.94000  70 100% Fertilización 5075.0000
-    ## 39  CIP 102  753.26000  78 100% Fertilización 4958.3333
-    ## 40  CIP 102  908.00000  84 100% Fertilización 3808.3333
-    ## 41  CIP 102 1088.53000  91 100% Fertilización 2975.0000
-    ## 42  CIP 102 1269.06000  98 100% Fertilización 1266.6667
-    ## 43  CIP 102 1449.59000 105 100% Fertilización  888.3333
-    ## 44  CIP 102 1707.49000 115 100% Fertilización  529.0909
+    ##   Variedad      Peso DDS      Tratamiento      NO3
+    ## 1  CIP 102  15.47156  36 0% Fertilización 9750.000
+    ## 2  CIP 102  35.14470  45 0% Fertilización 5816.667
+    ## 3  CIP 102  80.47700  53 0% Fertilización 7075.000
+    ## 4  CIP 102 164.08212  61 0% Fertilización 6266.667
+    ## 5  CIP 102 306.45962  70 0% Fertilización 5491.667
+    ## 6  CIP 102 466.36300  78 0% Fertilización 3816.667
 
-Con esto, ya podemos generar gráficos, presentando información del
+Así, ya podemos generar gráficos, presentando información del
 comportamiento de nutrientes, y la acumulación de biomasa.
 
-# Gráficos
+### Gráficos
 
 ``` r
 NO3CPI1 <-  Tabla_1%>%
@@ -1598,12 +1458,7 @@ NO3CPI1 <-  Tabla_1%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -1614,7 +1469,7 @@ ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -1623,12 +1478,7 @@ NO3CPI39 <-  Tabla_39%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -1639,7 +1489,7 @@ ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-29-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-31-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -1648,12 +1498,7 @@ NO3CPI102 <-  Tabla_102%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -1664,23 +1509,20 @@ ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-29-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-31-3.png)<!-- -->
 
-# Ca
+Este procedimiento se realiza para los otros dos nutrientes analizados.
 
-# CPI 1
+## Ca
+
+### CPI 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_pesos_savia_0_1, mccain_savia_0_1$Ca)
 colnames(Tabla_0_1) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1688,12 +1530,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_pesos_savia_33_1, mccain_savia_33_1$Ca)
 colnames(Tabla_33_1) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1701,12 +1538,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_pesos_savia_66_1, mccain_savia_66_1$Ca)
 colnames(Tabla_66_1) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1714,79 +1546,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_pesos_savia_100_1, mccain_savia_100_1$Ca)
 colnames(Tabla_100_1) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad        Peso DDS        Tratamiento       Ca
-    ## 1     CIP 1   11.633014  36   0% Fertilización 8.833333
-    ## 2     CIP 1   29.333988  45   0% Fertilización 4.083333
-    ## 3     CIP 1   78.230695  53   0% Fertilización 4.000000
-    ## 4     CIP 1  174.600433  61   0% Fertilización 4.000000
-    ## 5     CIP 1  338.347401  70   0% Fertilización 4.000000
-    ## 6     CIP 1  514.089312  78   0% Fertilización 4.000000
-    ## 7     CIP 1  650.338071  84   0% Fertilización 4.000000
-    ## 8     CIP 1  802.196612  91   0% Fertilización 4.000000
-    ## 9     CIP 1  938.516243  98   0% Fertilización 4.000000
-    ## 10    CIP 1 1055.305518 105   0% Fertilización 4.000000
-    ## 11    CIP 1 1187.474711 115   0% Fertilización 5.875000
-    ## 12    CIP 1  -10.351211  36  33% Fertilización 4.333333
-    ## 13    CIP 1   23.456322  45  33% Fertilización 4.000000
-    ## 14    CIP 1   91.243887  53  33% Fertilización 4.000000
-    ## 15    CIP 1  205.789319  61  33% Fertilización 4.000000
-    ## 16    CIP 1  389.815829  70  33% Fertilización 4.000000
-    ## 17    CIP 1  589.739866  78  33% Fertilización 4.000000
-    ## 18    CIP 1  751.404170  84  33% Fertilización 4.000000
-    ## 19    CIP 1  941.925588  91  33% Fertilización 4.000000
-    ## 20    CIP 1 1125.362599  98  33% Fertilización 4.000000
-    ## 21    CIP 1 1294.896575 105  33% Fertilización 4.000000
-    ## 22    CIP 1 1505.672254 115  33% Fertilización 4.000000
-    ## 23    CIP 1  -19.315572  36  66% Fertilización 4.666667
-    ## 24    CIP 1   22.671929  45  66% Fertilización 4.000000
-    ## 25    CIP 1   97.274387  53  66% Fertilización 4.000000
-    ## 26    CIP 1  215.020641  61  66% Fertilización 4.000000
-    ## 27    CIP 1  397.285003  70  66% Fertilización 4.000000
-    ## 28    CIP 1  592.827004  78  66% Fertilización 4.000000
-    ## 29    CIP 1  751.315634  84  66% Fertilización 4.000000
-    ## 30    CIP 1  939.894055  91  66% Fertilización 4.000000
-    ## 31    CIP 1 1124.303615  98  66% Fertilización 4.000000
-    ## 32    CIP 1 1298.049325 105  66% Fertilización 4.000000
-    ## 33    CIP 1 1519.816049 115  66% Fertilización 4.000000
-    ## 34    CIP 1    5.721753  36 100% Fertilización 9.416667
-    ## 35    CIP 1   26.897839  45 100% Fertilización 4.083333
-    ## 36    CIP 1   81.363913  53 100% Fertilización 4.000000
-    ## 37    CIP 1  187.619445  61 100% Fertilización 4.000000
-    ## 38    CIP 1  373.049929  70 100% Fertilización 4.000000
-    ## 39    CIP 1  581.612147  78 100% Fertilización 4.000000
-    ## 40    CIP 1  751.037173  84 100% Fertilización 4.000000
-    ## 41    CIP 1  948.807045  91 100% Fertilización 4.000000
-    ## 42    CIP 1 1135.484281  98 100% Fertilización 4.000000
-    ## 43    CIP 1 1303.498509 105 100% Fertilización 4.000000
-    ## 44    CIP 1 1504.723028 115 100% Fertilización 4.000000
+    ##   Variedad      Peso DDS      Tratamiento       Ca
+    ## 1    CIP 1  11.63301  36 0% Fertilización 8.833333
+    ## 2    CIP 1  29.33399  45 0% Fertilización 4.083333
+    ## 3    CIP 1  78.23070  53 0% Fertilización 4.000000
+    ## 4    CIP 1 174.60043  61 0% Fertilización 4.000000
+    ## 5    CIP 1 338.34740  70 0% Fertilización 4.000000
+    ## 6    CIP 1 514.08931  78 0% Fertilización 4.000000
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_pesos_savia_0_39, mccain_savia_0_39$Ca)
 colnames(Tabla_0_39) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1794,12 +1578,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_pesos_savia_33_39, mccain_savia_33_39$Ca)
 colnames(Tabla_33_39) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1807,12 +1586,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_pesos_savia_66_39, mccain_savia_66_39$Ca)
 colnames(Tabla_66_39) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1820,79 +1594,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_pesos_savia_100_39, mccain_savia_100_39$Ca)
 colnames(Tabla_100_39) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad         Peso DDS        Tratamiento        Ca
-    ## 1    CIP 39   42.1394663  36   0% Fertilización 12.166667
-    ## 2    CIP 39   44.2368570  45   0% Fertilización  6.416667
-    ## 3    CIP 39   58.0205521  53   0% Fertilización  4.916667
-    ## 4    CIP 39  105.9662014  61   0% Fertilización  4.000000
-    ## 5    CIP 39  227.2986097  70   0% Fertilización  4.000000
-    ## 6    CIP 39  394.4899459  78   0% Fertilización  4.000000
-    ## 7    CIP 39  542.5294729  84   0% Fertilización  4.000000
-    ## 8    CIP 39  721.2125136  91   0% Fertilización  4.000000
-    ## 9    CIP 39  890.4315709  98   0% Fertilización  4.000000
-    ## 10   CIP 39 1039.7433434 105   0% Fertilización  4.000000
-    ## 11   CIP 39 1210.9618919 115   0% Fertilización  4.000000
-    ## 12   CIP 39   59.9055045  36  33% Fertilización 17.916667
-    ## 13   CIP 39   60.0090792  45  33% Fertilización  7.083333
-    ## 14   CIP 39   64.0502374  53  33% Fertilización  5.666667
-    ## 15   CIP 39   99.8393649  61  33% Fertilización  5.416667
-    ## 16   CIP 39  242.9110476  70  33% Fertilización  4.000000
-    ## 17   CIP 39  468.8405151  78  33% Fertilización  4.000000
-    ## 18   CIP 39  665.0713449  84  33% Fertilización  4.000000
-    ## 19   CIP 39  883.6405011  91  33% Fertilización  4.000000
-    ## 20   CIP 39 1067.3069660  98  33% Fertilización  4.000000
-    ## 21   CIP 39 1208.7596488 105  33% Fertilización  4.000000
-    ## 22   CIP 39 1345.8212611 115  33% Fertilización  4.000000
-    ## 23   CIP 39    1.5913392  36  66% Fertilización 13.000000
-    ## 24   CIP 39   29.0999531  45  66% Fertilización  4.583333
-    ## 25   CIP 39   92.6010633  53  66% Fertilización  4.416667
-    ## 26   CIP 39  208.4335186  61  66% Fertilización  4.000000
-    ## 27   CIP 39  401.8777758  70  66% Fertilización  4.000000
-    ## 28   CIP 39  614.1624844  78  66% Fertilización  4.000000
-    ## 29   CIP 39  784.8137143  84  66% Fertilización  4.000000
-    ## 30   CIP 39  983.2361155  91  66% Fertilización  4.000000
-    ## 31   CIP 39 1170.5280754  98  66% Fertilización  4.000000
-    ## 32   CIP 39 1339.6180951 105  66% Fertilización  4.000000
-    ## 33   CIP 39 1543.4508064 115  66% Fertilización  4.000000
-    ## 34   CIP 39   -0.1428543  36 100% Fertilización 12.000000
-    ## 35   CIP 39   18.7542208  45 100% Fertilización  6.583333
-    ## 36   CIP 39   71.0799227  53 100% Fertilización  4.916667
-    ## 37   CIP 39  179.1064577  61 100% Fertilización  4.000000
-    ## 38   CIP 39  376.8636375  70 100% Fertilización  4.000000
-    ## 39   CIP 39  607.7237456  78 100% Fertilización  4.000000
-    ## 40   CIP 39  799.9629919  84 100% Fertilización  4.000000
-    ## 41   CIP 39 1028.6597073  91 100% Fertilización  4.000000
-    ## 42   CIP 39 1248.2202203  98 100% Fertilización  4.000000
-    ## 43   CIP 39 1448.6200148 105 100% Fertilización  4.000000
-    ## 44   CIP 39 1691.9380392 115 100% Fertilización  4.000000
+    ##   Variedad      Peso DDS      Tratamiento        Ca
+    ## 1   CIP 39  42.13947  36 0% Fertilización 12.166667
+    ## 2   CIP 39  44.23686  45 0% Fertilización  6.416667
+    ## 3   CIP 39  58.02055  53 0% Fertilización  4.916667
+    ## 4   CIP 39 105.96620  61 0% Fertilización  4.000000
+    ## 5   CIP 39 227.29861  70 0% Fertilización  4.000000
+    ## 6   CIP 39 394.48995  78 0% Fertilización  4.000000
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_pesos_savia_0_102, mccain_savia_0_102$Ca)
 colnames(Tabla_0_102) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1900,12 +1626,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_pesos_savia_33_102, mccain_savia_33_102$Ca)
 colnames(Tabla_33_102) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1913,12 +1634,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_pesos_savia_66_102, mccain_savia_66_102$Ca)
 colnames(Tabla_66_102) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
@@ -1926,67 +1642,24 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_pesos_savia_100_102, mccain_savia_100_102$Ca)
 colnames(Tabla_100_102) <- c('Variedad','Peso','DDS','Tratamiento','Ca')
 
 Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad       Peso DDS        Tratamiento       Ca
-    ## 1   CIP 102   15.47156  36   0% Fertilización 4.000000
-    ## 2   CIP 102   35.14470  45   0% Fertilización 4.000000
-    ## 3   CIP 102   80.47700  53   0% Fertilización 4.000000
-    ## 4   CIP 102  164.08212  61   0% Fertilización 4.000000
-    ## 5   CIP 102  306.45962  70   0% Fertilización 4.000000
-    ## 6   CIP 102  466.36300  78   0% Fertilización 4.000000
-    ## 7   CIP 102  597.54201  84   0% Fertilización 4.000000
-    ## 8   CIP 102  752.99450  91   0% Fertilización 4.000000
-    ## 9   CIP 102  902.68763  98   0% Fertilización 4.000000
-    ## 10  CIP 102 1040.45009 105   0% Fertilización 4.000000
-    ## 11  CIP 102 1210.16723 115   0% Fertilización 4.000000
-    ## 12  CIP 102  -39.20201  36  33% Fertilización 4.000000
-    ## 13  CIP 102   30.30834  45  33% Fertilización 4.000000
-    ## 14  CIP 102  115.78214  53  33% Fertilización 4.000000
-    ## 15  CIP 102  223.12919  61  33% Fertilización 4.000000
-    ## 16  CIP 102  366.62264  70  33% Fertilización 4.000000
-    ## 17  CIP 102  509.50459  78  33% Fertilización 4.000000
-    ## 18  CIP 102  622.84645  84  33% Fertilización 4.000000
-    ## 19  CIP 102  758.43565  91  33% Fertilización 4.000000
-    ## 20  CIP 102  894.44442  98  33% Fertilización 4.000000
-    ## 21  CIP 102 1027.94633 105  33% Fertilización 4.000000
-    ## 22  CIP 102 1209.72932 115  33% Fertilización 4.000000
-    ## 23  CIP 102  -18.36093  36  66% Fertilización 4.000000
-    ## 24  CIP 102   27.29990  45  66% Fertilización 4.000000
-    ## 25  CIP 102  103.12089  53  66% Fertilización 4.000000
-    ## 26  CIP 102  221.66948  61  66% Fertilización 4.000000
-    ## 27  CIP 102  410.82682  70  66% Fertilización 4.000000
-    ## 28  CIP 102  625.52981  78  66% Fertilización 4.000000
-    ## 29  CIP 102  810.19444  84  66% Fertilización 4.000000
-    ## 30  CIP 102 1044.04849  91  66% Fertilización 4.000000
-    ## 31  CIP 102 1289.56362  98  66% Fertilización 4.000000
-    ## 32  CIP 102 1538.41722 105  66% Fertilización 4.000000
-    ## 33  CIP 102 1885.52322 115  66% Fertilización 4.000000
-    ## 34  CIP 102 -329.92000  36 100% Fertilización 4.083333
-    ## 35  CIP 102  -97.81000  45 100% Fertilización 4.000000
-    ## 36  CIP 102  108.51000  53 100% Fertilización 4.000000
-    ## 37  CIP 102  314.83000  61 100% Fertilización 4.000000
-    ## 38  CIP 102  546.94000  70 100% Fertilización 4.000000
-    ## 39  CIP 102  753.26000  78 100% Fertilización 4.000000
-    ## 40  CIP 102  908.00000  84 100% Fertilización 4.000000
-    ## 41  CIP 102 1088.53000  91 100% Fertilización 4.000000
-    ## 42  CIP 102 1269.06000  98 100% Fertilización 4.000000
-    ## 43  CIP 102 1449.59000 105 100% Fertilización 4.000000
-    ## 44  CIP 102 1707.49000 115 100% Fertilización 4.000000
+    ##   Variedad      Peso DDS      Tratamiento Ca
+    ## 1  CIP 102  15.47156  36 0% Fertilización  4
+    ## 2  CIP 102  35.14470  45 0% Fertilización  4
+    ## 3  CIP 102  80.47700  53 0% Fertilización  4
+    ## 4  CIP 102 164.08212  61 0% Fertilización  4
+    ## 5  CIP 102 306.45962  70 0% Fertilización  4
+    ## 6  CIP 102 466.36300  78 0% Fertilización  4
 
-# Gráficos
+### Gráficos
 
 ``` r
 CaCPI1 <-  Tabla_1%>%
@@ -1995,12 +1668,7 @@ CaCPI1 <-  Tabla_1%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Peso seco (g)", y="Contenido de calcio (ppm)")+
   geom_line(size = 1)  +
@@ -2011,7 +1679,7 @@ ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -2020,12 +1688,7 @@ CaCPI39 <-  Tabla_39%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Peso seco (g)", y="Contenido de calcio (ppm)")+
   geom_line(size = 1)  +
@@ -2036,7 +1699,7 @@ ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-33-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-35-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -2045,12 +1708,7 @@ CaCPI102 <-  Tabla_102%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,5,0.01))+
@@ -2061,23 +1719,18 @@ ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-33-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-35-3.png)<!-- -->
 
-# K
+## K
 
-# CPI 1
+### CPI 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_pesos_savia_0_1, mccain_savia_0_1$K)
 colnames(Tabla_0_1) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2085,12 +1738,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_pesos_savia_33_1, mccain_savia_33_1$K)
 colnames(Tabla_33_1) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2098,12 +1746,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_pesos_savia_66_1, mccain_savia_66_1$K)
 colnames(Tabla_66_1) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2111,79 +1754,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_pesos_savia_100_1, mccain_savia_100_1$K)
 colnames(Tabla_100_1) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad        Peso DDS        Tratamiento        K
-    ## 1     CIP 1   11.633014  36   0% Fertilización 5508.333
-    ## 2     CIP 1   29.333988  45   0% Fertilización 5375.000
-    ## 3     CIP 1   78.230695  53   0% Fertilización 7966.667
-    ## 4     CIP 1  174.600433  61   0% Fertilización 7625.000
-    ## 5     CIP 1  338.347401  70   0% Fertilización 6191.667
-    ## 6     CIP 1  514.089312  78   0% Fertilización 6183.333
-    ## 7     CIP 1  650.338071  84   0% Fertilización 9800.000
-    ## 8     CIP 1  802.196612  91   0% Fertilización 8191.667
-    ## 9     CIP 1  938.516243  98   0% Fertilización 7683.333
-    ## 10    CIP 1 1055.305518 105   0% Fertilización 9183.333
-    ## 11    CIP 1 1187.474711 115   0% Fertilización 9162.500
-    ## 12    CIP 1  -10.351211  36  33% Fertilización 5758.333
-    ## 13    CIP 1   23.456322  45  33% Fertilización 5358.333
-    ## 14    CIP 1   91.243887  53  33% Fertilización 7733.333
-    ## 15    CIP 1  205.789319  61  33% Fertilización 7158.333
-    ## 16    CIP 1  389.815829  70  33% Fertilización 6583.333
-    ## 17    CIP 1  589.739866  78  33% Fertilización 6266.667
-    ## 18    CIP 1  751.404170  84  33% Fertilización 9233.333
-    ## 19    CIP 1  941.925588  91  33% Fertilización 8466.667
-    ## 20    CIP 1 1125.362599  98  33% Fertilización 8000.000
-    ## 21    CIP 1 1294.896575 105  33% Fertilización 8475.000
-    ## 22    CIP 1 1505.672254 115  33% Fertilización 9000.000
-    ## 23    CIP 1  -19.315572  36  66% Fertilización 5616.667
-    ## 24    CIP 1   22.671929  45  66% Fertilización 4883.333
-    ## 25    CIP 1   97.274387  53  66% Fertilización 7816.667
-    ## 26    CIP 1  215.020641  61  66% Fertilización 6916.667
-    ## 27    CIP 1  397.285003  70  66% Fertilización 6225.000
-    ## 28    CIP 1  592.827004  78  66% Fertilización 6008.333
-    ## 29    CIP 1  751.315634  84  66% Fertilización 9450.000
-    ## 30    CIP 1  939.894055  91  66% Fertilización 8016.667
-    ## 31    CIP 1 1124.303615  98  66% Fertilización 8216.667
-    ## 32    CIP 1 1298.049325 105  66% Fertilización 8016.667
-    ## 33    CIP 1 1519.816049 115  66% Fertilización 8760.000
-    ## 34    CIP 1    5.721753  36 100% Fertilización 5575.000
-    ## 35    CIP 1   26.897839  45 100% Fertilización 4833.333
-    ## 36    CIP 1   81.363913  53 100% Fertilización 8175.000
-    ## 37    CIP 1  187.619445  61 100% Fertilización 6616.667
-    ## 38    CIP 1  373.049929  70 100% Fertilización 6358.333
-    ## 39    CIP 1  581.612147  78 100% Fertilización 6000.000
-    ## 40    CIP 1  751.037173  84 100% Fertilización 9508.333
-    ## 41    CIP 1  948.807045  91 100% Fertilización 7966.667
-    ## 42    CIP 1 1135.484281  98 100% Fertilización 7533.333
-    ## 43    CIP 1 1303.498509 105 100% Fertilización 8175.000
-    ## 44    CIP 1 1504.723028 115 100% Fertilización 8844.444
+    ##   Variedad      Peso DDS      Tratamiento        K
+    ## 1    CIP 1  11.63301  36 0% Fertilización 5508.333
+    ## 2    CIP 1  29.33399  45 0% Fertilización 5375.000
+    ## 3    CIP 1  78.23070  53 0% Fertilización 7966.667
+    ## 4    CIP 1 174.60043  61 0% Fertilización 7625.000
+    ## 5    CIP 1 338.34740  70 0% Fertilización 6191.667
+    ## 6    CIP 1 514.08931  78 0% Fertilización 6183.333
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_pesos_savia_0_39, mccain_savia_0_39$K)
 colnames(Tabla_0_39) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2191,12 +1786,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_pesos_savia_33_39, mccain_savia_33_39$K)
 colnames(Tabla_33_39) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2204,12 +1794,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_pesos_savia_66_39, mccain_savia_66_39$K)
 colnames(Tabla_66_39) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2217,79 +1802,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_pesos_savia_100_39, mccain_savia_100_39$K)
 colnames(Tabla_100_39) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad         Peso DDS        Tratamiento        K
-    ## 1    CIP 39   42.1394663  36   0% Fertilización 4483.333
-    ## 2    CIP 39   44.2368570  45   0% Fertilización 5041.667
-    ## 3    CIP 39   58.0205521  53   0% Fertilización 7508.333
-    ## 4    CIP 39  105.9662014  61   0% Fertilización 6966.667
-    ## 5    CIP 39  227.2986097  70   0% Fertilización 6250.000
-    ## 6    CIP 39  394.4899459  78   0% Fertilización 5900.000
-    ## 7    CIP 39  542.5294729  84   0% Fertilización 9633.333
-    ## 8    CIP 39  721.2125136  91   0% Fertilización 7233.333
-    ## 9    CIP 39  890.4315709  98   0% Fertilización 6883.333
-    ## 10   CIP 39 1039.7433434 105   0% Fertilización 7750.000
-    ## 11   CIP 39 1210.9618919 115   0% Fertilización 8800.000
-    ## 12   CIP 39   59.9055045  36  33% Fertilización 4741.667
-    ## 13   CIP 39   60.0090792  45  33% Fertilización 5191.667
-    ## 14   CIP 39   64.0502374  53  33% Fertilización 7925.000
-    ## 15   CIP 39   99.8393649  61  33% Fertilización 6566.667
-    ## 16   CIP 39  242.9110476  70  33% Fertilización 6233.333
-    ## 17   CIP 39  468.8405151  78  33% Fertilización 5791.667
-    ## 18   CIP 39  665.0713449  84  33% Fertilización 9591.667
-    ## 19   CIP 39  883.6405011  91  33% Fertilización 7550.000
-    ## 20   CIP 39 1067.3069660  98  33% Fertilización 6841.667
-    ## 21   CIP 39 1208.7596488 105  33% Fertilización 7608.333
-    ## 22   CIP 39 1345.8212611 115  33% Fertilización 8866.667
-    ## 23   CIP 39    1.5913392  36  66% Fertilización 5008.333
-    ## 24   CIP 39   29.0999531  45  66% Fertilización 4808.333
-    ## 25   CIP 39   92.6010633  53  66% Fertilización 7983.333
-    ## 26   CIP 39  208.4335186  61  66% Fertilización 6625.000
-    ## 27   CIP 39  401.8777758  70  66% Fertilización 6616.667
-    ## 28   CIP 39  614.1624844  78  66% Fertilización 5891.667
-    ## 29   CIP 39  784.8137143  84  66% Fertilización 9733.333
-    ## 30   CIP 39  983.2361155  91  66% Fertilización 7441.667
-    ## 31   CIP 39 1170.5280754  98  66% Fertilización 7125.000
-    ## 32   CIP 39 1339.6180951 105  66% Fertilización 7700.000
-    ## 33   CIP 39 1543.4508064 115  66% Fertilización 8825.000
-    ## 34   CIP 39   -0.1428543  36 100% Fertilización 4833.333
-    ## 35   CIP 39   18.7542208  45 100% Fertilización 5225.000
-    ## 36   CIP 39   71.0799227  53 100% Fertilización 8183.333
-    ## 37   CIP 39  179.1064577  61 100% Fertilización 6683.333
-    ## 38   CIP 39  376.8636375  70 100% Fertilización 6525.000
-    ## 39   CIP 39  607.7237456  78 100% Fertilización 5966.667
-    ## 40   CIP 39  799.9629919  84 100% Fertilización 9466.667
-    ## 41   CIP 39 1028.6597073  91 100% Fertilización 7341.667
-    ## 42   CIP 39 1248.2202203  98 100% Fertilización 7300.000
-    ## 43   CIP 39 1448.6200148 105 100% Fertilización 8400.000
-    ## 44   CIP 39 1691.9380392 115 100% Fertilización 8888.889
+    ##   Variedad      Peso DDS      Tratamiento        K
+    ## 1   CIP 39  42.13947  36 0% Fertilización 4483.333
+    ## 2   CIP 39  44.23686  45 0% Fertilización 5041.667
+    ## 3   CIP 39  58.02055  53 0% Fertilización 7508.333
+    ## 4   CIP 39 105.96620  61 0% Fertilización 6966.667
+    ## 5   CIP 39 227.29861  70 0% Fertilización 6250.000
+    ## 6   CIP 39 394.48995  78 0% Fertilización 5900.000
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_pesos_savia_0_102, mccain_savia_0_102$K)
 colnames(Tabla_0_102) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2297,12 +1834,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_pesos_savia_33_102, mccain_savia_33_102$K)
 colnames(Tabla_33_102) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2310,12 +1842,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_pesos_savia_66_102, mccain_savia_66_102$K)
 colnames(Tabla_66_102) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
@@ -2323,67 +1850,24 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_pesos_savia_100_102, mccain_savia_100_102$K)
 colnames(Tabla_100_102) <- c('Variedad','Peso','DDS','Tratamiento','K')
 
 Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad       Peso DDS        Tratamiento        K
-    ## 1   CIP 102   15.47156  36   0% Fertilización 5800.000
-    ## 2   CIP 102   35.14470  45   0% Fertilización 5433.333
-    ## 3   CIP 102   80.47700  53   0% Fertilización 8208.333
-    ## 4   CIP 102  164.08212  61   0% Fertilización 7175.000
-    ## 5   CIP 102  306.45962  70   0% Fertilización 6480.000
-    ## 6   CIP 102  466.36300  78   0% Fertilización 6033.333
-    ## 7   CIP 102  597.54201  84   0% Fertilización 9450.000
-    ## 8   CIP 102  752.99450  91   0% Fertilización 8383.333
-    ## 9   CIP 102  902.68763  98   0% Fertilización 8325.000
-    ## 10  CIP 102 1040.45009 105   0% Fertilización 8900.000
-    ## 11  CIP 102 1210.16723 115   0% Fertilización 9822.222
-    ## 12    CIP 1  -39.20201  36  33% Fertilización 5758.333
-    ## 13    CIP 1   30.30834  45  33% Fertilización 5358.333
-    ## 14    CIP 1  115.78214  53  33% Fertilización 7733.333
-    ## 15    CIP 1  223.12919  61  33% Fertilización 7158.333
-    ## 16    CIP 1  366.62264  70  33% Fertilización 6583.333
-    ## 17    CIP 1  509.50459  78  33% Fertilización 6266.667
-    ## 18    CIP 1  622.84645  84  33% Fertilización 9233.333
-    ## 19    CIP 1  758.43565  91  33% Fertilización 8466.667
-    ## 20    CIP 1  894.44442  98  33% Fertilización 8000.000
-    ## 21    CIP 1 1027.94633 105  33% Fertilización 8475.000
-    ## 22    CIP 1 1209.72932 115  33% Fertilización 9000.000
-    ## 23  CIP 102  -18.36093  36  66% Fertilización 5516.667
-    ## 24  CIP 102   27.29990  45  66% Fertilización 5525.000
-    ## 25  CIP 102  103.12089  53  66% Fertilización 8083.333
-    ## 26  CIP 102  221.66948  61  66% Fertilización 7041.667
-    ## 27  CIP 102  410.82682  70  66% Fertilización 6300.000
-    ## 28  CIP 102  625.52981  78  66% Fertilización 5841.667
-    ## 29  CIP 102  810.19444  84  66% Fertilización 9108.333
-    ## 30  CIP 102 1044.04849  91  66% Fertilización 8241.667
-    ## 31  CIP 102 1289.56362  98  66% Fertilización 7825.000
-    ## 32  CIP 102 1538.41722 105  66% Fertilización 9325.000
-    ## 33  CIP 102 1885.52322 115  66% Fertilización 9787.500
-    ## 34  CIP 102 -329.92000  36 100% Fertilización 5358.333
-    ## 35  CIP 102  -97.81000  45 100% Fertilización 5291.667
-    ## 36  CIP 102  108.51000  53 100% Fertilización 7941.667
-    ## 37  CIP 102  314.83000  61 100% Fertilización 7283.333
-    ## 38  CIP 102  546.94000  70 100% Fertilización 6233.333
-    ## 39  CIP 102  753.26000  78 100% Fertilización 6333.333
-    ## 40  CIP 102  908.00000  84 100% Fertilización 9341.667
-    ## 41  CIP 102 1088.53000  91 100% Fertilización 7891.667
-    ## 42  CIP 102 1269.06000  98 100% Fertilización 8200.000
-    ## 43  CIP 102 1449.59000 105 100% Fertilización 8841.583
-    ## 44  CIP 102 1707.49000 115 100% Fertilización 9709.091
+    ##   Variedad      Peso DDS      Tratamiento        K
+    ## 1  CIP 102  15.47156  36 0% Fertilización 5800.000
+    ## 2  CIP 102  35.14470  45 0% Fertilización 5433.333
+    ## 3  CIP 102  80.47700  53 0% Fertilización 8208.333
+    ## 4  CIP 102 164.08212  61 0% Fertilización 7175.000
+    ## 5  CIP 102 306.45962  70 0% Fertilización 6480.000
+    ## 6  CIP 102 466.36300  78 0% Fertilización 6033.333
 
-# Gráficos
+### Gráficos
 
 ``` r
 KCPI1 <-  Tabla_1%>%
@@ -2392,12 +1876,7 @@ KCPI1 <-  Tabla_1%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -2408,7 +1887,7 @@ ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -2417,12 +1896,7 @@ KCPI39 <-  Tabla_39%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -2433,7 +1907,7 @@ ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-37-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-39-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -2442,12 +1916,7 @@ KCPI102 <-  Tabla_102%>%
             PESO=Peso,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -2458,11 +1927,14 @@ ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-37-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-39-3.png)<!-- -->
 
-### 4) MODELO RENDIMIENTO
+# 4) MODELO RENDIMIENTO
 
-### VARIEDAD 1
+En este apartado, se realiza el mismo procedimiento utilizado en el
+apartado número dos, pero orientado al rendimiento del cultivo.
+
+## VARIEDAD 1
 
 ``` r
 library(dplyr)
@@ -2473,12 +1945,8 @@ masa_seca_1 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA=mean(REND_TUB_TON_HA,na.rm = T),
             DDS=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
 
-``` r
 ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
@@ -2486,7 +1954,7 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2500,12 +1968,7 @@ masa_seca_100_1 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_100_1=REND_TUB_TON_HA,
             DDS_100_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_100_1 <- nls(REND_TUB_TON_HA_100_1 ~ Gompertz(DDS_100_1, y0, ymax, k, lag),
              data=masa_seca_100_1,
              start = list(y0=1, ymax=30, k=0.1, lag=1))
@@ -2516,12 +1979,7 @@ masa_seca_66_1 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_66_1=REND_TUB_TON_HA,
             DDS_66_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_66_1 <- nls(REND_TUB_TON_HA_66_1 ~ Gompertz(DDS_66_1, y0, ymax, k, lag),
              data=masa_seca_66_1,
              start = list(y0=1, ymax=30, k=0.1, lag=1))
@@ -2532,12 +1990,7 @@ masa_seca_33_1 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_33_1=REND_TUB_TON_HA,
             DDS_33_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_33_1 <- nls(REND_TUB_TON_HA_33_1 ~ Gompertz(DDS_33_1, y0, ymax, k, lag),
              data=masa_seca_33_1,
              start = list(y0=1, ymax=30, k=0.1, lag=1))
@@ -2548,12 +2001,7 @@ masa_seca_0_1 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_0_1=REND_TUB_TON_HA,
             DDS_0_1=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Gomp_0_1 <- nls(REND_TUB_TON_HA_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag),
              data=masa_seca_0_1,
              start = list(y0=1, ymax=30, k=0.1, lag=1))
@@ -2612,6 +2060,90 @@ coefs_0_1
     ## -0.02763788 15.90154172  0.51167620 73.54360709
 
 ``` r
+summary(Gomp_100_1)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_100_1 ~ Gompertz(DDS_100_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    0.23490    0.40669   0.578     0.57    
+    ## ymax 20.75937    3.27729   6.334 3.50e-06 ***
+    ## k     0.73886    0.06868  10.757 9.14e-10 ***
+    ## lag  81.37756    3.66195  22.222 1.43e-15 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.092 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 16 
+    ## Achieved convergence tolerance: 5.712e-06
+
+``` r
+summary(Gomp_66_1)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_66_1 ~ Gompertz(DDS_66_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    0.02503    0.44086   0.057    0.955    
+    ## ymax 24.97695    4.78982   5.215 4.21e-05 ***
+    ## k     0.75190    0.05253  14.314 5.69e-12 ***
+    ## lag  79.64812    3.53101  22.557 1.07e-15 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.073 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 10 
+    ## Achieved convergence tolerance: 7.764e-06
+
+``` r
+summary(Gomp_33_1)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_33_1 ~ Gompertz(DDS_33_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    0.02324    0.61208   0.038  0.97009    
+    ## ymax 23.75984    6.26816   3.791  0.00115 ** 
+    ## k     0.72270    0.07387   9.784 4.56e-09 ***
+    ## lag  78.95595    5.10579  15.464 1.37e-12 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.481 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 11 
+    ## Achieved convergence tolerance: 1.474e-06
+
+``` r
+summary(Gomp_0_1)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0   -0.02764    0.54037  -0.051 0.959716    
+    ## ymax 15.90154    3.73366   4.259 0.000384 ***
+    ## k     0.51168    0.06684   7.656 2.29e-07 ***
+    ## lag  73.54361    6.34027  11.599 2.47e-10 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.22 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 11 
+    ## Achieved convergence tolerance: 1.332e-06
+
+``` r
 DDS_LEVELS <- seq(0,150,by=1)
 
 par(mfrow=c(2,2))
@@ -2641,7 +2173,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2659,7 +2191,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_1 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_1,ymax_100_1,k_100_1,lag_100_1)
@@ -2745,7 +2277,7 @@ Tabla_RENDIMIENTOs_savia_0_1
     ## 10            5.883286437     105 0% Fertilización
     ## 11            7.730052676     115 0% Fertilización
 
-### VARIEDAD 39
+## VARIEDAD 39
 
 ``` r
 masa_seca_39 <- datos_masa_seca %>% 
@@ -2754,12 +2286,7 @@ masa_seca_39 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_39=mean(REND_TUB_TON_HA,na.rm = T),
             DDS_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
@@ -2767,7 +2294,7 @@ ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, grou
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2893,6 +2420,90 @@ coefs_0_39
     ##  0.2484313 13.7663784  0.6070375 78.8750925
 
 ``` r
+summary(Gomp_100_39)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_100_39 ~ Gompertz(DDS_100_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0   -0.03644    0.35528  -0.103    0.919    
+    ## ymax 25.19313    2.81915   8.936 2.02e-08 ***
+    ## k     0.75193    0.03739  20.111 9.72e-15 ***
+    ## lag  73.27102    2.71074  27.030  < 2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.7612 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 13 
+    ## Achieved convergence tolerance: 2.365e-06
+
+``` r
+summary(Gomp_66_39)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_66_39 ~ Gompertz(DDS_66_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0   -0.54494    0.72629  -0.750  0.46180    
+    ## ymax 28.64772    7.65524   3.742  0.00128 ** 
+    ## k     0.61243    0.02788  21.971 1.78e-15 ***
+    ## lag  66.81881    4.96009  13.471 1.72e-11 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.8846 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 11 
+    ## Achieved convergence tolerance: 2.208e-06
+
+``` r
+summary(Gomp_33_39)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_33_39 ~ Gompertz(DDS_33_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    0.19907    0.22870    0.87    0.394    
+    ## ymax 12.67249    0.57073   22.20 1.45e-15 ***
+    ## k     0.72811    0.06361   11.45 3.12e-10 ***
+    ## lag  76.57484    2.26106   33.87  < 2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.6394 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 14 
+    ## Achieved convergence tolerance: 3.8e-06
+
+``` r
+summary(Gomp_0_39)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_0_39 ~ Gompertz(DDS_0_39, y0, ymax, k, lag)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0    0.24843    0.29800   0.834    0.414    
+    ## ymax 13.76638    1.31901  10.437 1.53e-09 ***
+    ## k     0.60704    0.06603   9.193 1.28e-08 ***
+    ## lag  78.87509    3.47930  22.670 9.75e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.8211 on 20 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 14 
+    ## Achieved convergence tolerance: 2.523e-06
+
+``` r
 DDS_LEVELS <- seq(0,150,by=1)
 
 par(mfrow=c(2,2))
@@ -2922,7 +2533,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2940,7 +2551,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-46-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-50-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -3026,7 +2637,7 @@ Tabla_RENDIMIENTOs_savia_0_39
     ## 10               6.1855946      105 0% Fertilización
     ## 11               8.2968957      115 0% Fertilización
 
-### VARIEDAD 102
+## VARIEDAD 102
 
 ``` r
 masa_seca_102 <- datos_masa_seca %>% 
@@ -3035,32 +2646,7 @@ masa_seca_102 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_102=mean(REND_TUB_TON_HA,na.rm = T),
             DDS_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
-masa_seca_102
-```
-
-    ## # A tibble: 96 × 5
-    ## # Groups:   DDS, TRATAMIENTO. [24]
-    ##      DDS TRATAMIENTO.       REND_TUB_TON_HA_102 DDS_102 TRATAMIENTO_102   
-    ##    <dbl> <chr>                            <dbl>   <dbl> <chr>             
-    ##  1    43 0% Fertilización                     0      43 0% Fertilización  
-    ##  2    43 0% Fertilización                     0      43 0% Fertilización  
-    ##  3    43 0% Fertilización                     0      43 0% Fertilización  
-    ##  4    43 0% Fertilización                     0      43 0% Fertilización  
-    ##  5    43 100% Fertilización                   0      43 100% Fertilización
-    ##  6    43 100% Fertilización                   0      43 100% Fertilización
-    ##  7    43 100% Fertilización                   0      43 100% Fertilización
-    ##  8    43 100% Fertilización                   0      43 100% Fertilización
-    ##  9    43 33% Fertilización                    0      43 33% Fertilización 
-    ## 10    43 33% Fertilización                    0      43 33% Fertilización 
-    ## # … with 86 more rows
-
-``` r
 ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
@@ -3068,11 +2654,11 @@ ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 ``` r
 Cuadratica <- function(x,y0,a){
-  result<- (y0 + a*x^2)
+  result<- (y0 + a*x^3)
   return(result)
 }
 
@@ -3082,12 +2668,7 @@ masa_seca_100_102 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_100_102=REND_TUB_TON_HA,
             DDS_100_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Cuad_100_102 <- nls(REND_TUB_TON_HA_100_102~Cuadratica(DDS_100_102,y0,a),
              data=masa_seca_100_102,
              start = list(y0=0,a=1))
@@ -3098,12 +2679,7 @@ masa_seca_66_102 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_66_102=REND_TUB_TON_HA,
             DDS_66_102=DDS,
             TRATAMIENTO=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Cuad_66_102 <- nls(REND_TUB_TON_HA_66_102~Cuadratica(DDS_66_102,y0,a),
              data=masa_seca_66_102,
              start = list(y0=0,a=1))
@@ -3114,12 +2690,7 @@ masa_seca_33_102 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_33_102=REND_TUB_TON_HA,
             DDS_33_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Cuad_33_102 <- nls(REND_TUB_TON_HA_33_102~Cuadratica(DDS_33_102,y0,a),
              data=masa_seca_33_102,
              start = list(y0=0,a=1))
@@ -3130,12 +2701,7 @@ masa_seca_0_102 <- datos_masa_seca %>%
   summarise(REND_TUB_TON_HA_0_102=REND_TUB_TON_HA,
             DDS_0_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'TRATAMIENTO.'. You can override
-    ## using the `.groups` argument.
-
-``` r
 Cuad_0_102 <- nls(REND_TUB_TON_HA_0_102~Cuadratica(DDS_0_102,y0,a),
              data=masa_seca_0_102,
              start = list(y0=0,a=1))
@@ -3149,8 +2715,8 @@ a_100_102=coefs_100_102[2]
 coefs_100_102
 ```
 
-    ##           y0            a 
-    ## -4.405376227  0.001209678
+    ##            y0             a 
+    ## -1.545410e+00  7.882621e-06
 
 ``` r
 coefs_66_102 <- coef(Cuad_66_102)
@@ -3160,8 +2726,8 @@ a_66_102=coefs_66_102[2]
 coefs_66_102
 ```
 
-    ##          y0           a 
-    ## -4.35772929  0.00130429
+    ##            y0             a 
+    ## -1.180355e+00  8.416356e-06
 
 ``` r
 coefs_33_102 <- coef(Cuad_33_102)
@@ -3172,7 +2738,7 @@ coefs_33_102
 ```
 
     ##            y0             a 
-    ## -2.2917532537  0.0007607411
+    ## -4.453981e-01  4.915011e-06
 
 ``` r
 coefs_0_102 <- coef(Cuad_0_102)
@@ -3183,7 +2749,83 @@ coefs_0_102
 ```
 
     ##            y0             a 
-    ## -2.3039743251  0.0007274068
+    ## -4.980364e-01  4.663884e-06
+
+``` r
+summary(Cuad_100_102)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_100_102 ~ Cuadratica(DDS_100_102, y0, a)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0 -1.545e+00  4.510e-01  -3.427  0.00241 ** 
+    ## a   7.883e-06  2.920e-07  26.991  < 2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.502 on 22 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 1 
+    ## Achieved convergence tolerance: 2.011e-09
+
+``` r
+summary(Cuad_66_102)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_66_102 ~ Cuadratica(DDS_66_102, y0, a)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0 -1.180e+00  2.859e-01  -4.128 0.000441 ***
+    ## a   8.416e-06  1.852e-07  45.450  < 2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.9525 on 22 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 1 
+    ## Achieved convergence tolerance: 4.672e-09
+
+``` r
+summary(Cuad_33_102)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_33_102 ~ Cuadratica(DDS_33_102, y0, a)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0 -4.454e-01  2.762e-01  -1.613    0.121    
+    ## a   4.915e-06  1.789e-07  27.480   <2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.92 on 22 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 1 
+    ## Achieved convergence tolerance: 2.466e-08
+
+``` r
+summary(Cuad_0_102)
+```
+
+    ## 
+    ## Formula: REND_TUB_TON_HA_0_102 ~ Cuadratica(DDS_0_102, y0, a)
+    ## 
+    ## Parameters:
+    ##      Estimate Std. Error t value Pr(>|t|)    
+    ## y0 -4.980e-01  3.167e-01  -1.572     0.13    
+    ## a   4.664e-06  2.051e-07  22.737   <2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 1.055 on 22 degrees of freedom
+    ## 
+    ## Number of iterations to convergence: 1 
+    ## Achieved convergence tolerance: 9.802e-09
 
 ``` r
 DDS_LEVELS <- seq(0,150,by=1)
@@ -3215,7 +2857,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -3233,7 +2875,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-51-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-56-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_102 <-Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_102,a_100_102)
@@ -3244,17 +2886,17 @@ Tabla_RENDIMIENTOs_savia_100_102
 ```
 
     ##    RENDIMIENTOs_savia_100_102 DDS_100_102 TRATAMIENTO_100_102
-    ## 1                 -2.83763350          36  100% Fertilización
-    ## 2                 -1.95577822          45  100% Fertilización
-    ## 3                 -1.00739065          53  100% Fertilización
-    ## 4                  0.09583572          61  100% Fertilización
-    ## 5                  1.52204611          70  100% Fertilización
-    ## 6                  2.95430490          78  100% Fertilización
-    ## 7                  4.13011194          84  100% Fertilización
-    ## 8                  5.61196752          91  100% Fertilización
-    ## 9                  7.21237155          98  100% Fertilización
-    ## 10                 8.93132403         105  100% Fertilización
-    ## 11                11.59261569         115  100% Fertilización
+    ## 1                  -1.1776381          36  100% Fertilización
+    ## 2                  -0.8271059          45  100% Fertilización
+    ## 3                  -0.3718688          53  100% Fertilización
+    ## 4                   0.2437954          61  100% Fertilización
+    ## 5                   1.1583292          70  100% Fertilización
+    ## 6                   2.1953037          78  100% Fertilización
+    ## 7                   3.1266511          84  100% Fertilización
+    ## 8                   4.3947046          91  100% Fertilización
+    ## 9                   5.8736498          98  100% Fertilización
+    ## 10                  7.5797090         105  100% Fertilización
+    ## 11                 10.4430709         115  100% Fertilización
 
 ``` r
 RENDIMIENTOs_savia_66_102 <- Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_66_102,a_66_102)
@@ -3265,17 +2907,17 @@ Tabla_RENDIMIENTOs_savia_66_102
 ```
 
     ##    RENDIMIENTOs_savia_66_102 DDS_66_102 TRATAMIENTO_66_102
-    ## 1                 -2.6673699         36  66% Fertilización
-    ## 2                 -1.7165427         45  66% Fertilización
-    ## 3                 -0.6939796         53  66% Fertilización
-    ## 4                  0.4955326         61  66% Fertilización
-    ## 5                  2.0332901         70  66% Fertilización
-    ## 6                  3.5775690         78  66% Fertilización
-    ## 7                  4.8453386         84  66% Fertilización
-    ## 8                  6.4430934         91  66% Fertilización
-    ## 9                  8.1686687         98  66% Fertilización
-    ## 10                10.0220643        105  66% Fertilización
-    ## 11                12.8915015        115  66% Fertilización
+    ## 1                -0.78768127         36  66% Fertilización
+    ## 2                -0.41341432         45  66% Fertilización
+    ## 3                 0.07264709         53  66% Fertilización
+    ## 4                 0.72999819         61  66% Fertilización
+    ## 5                 1.70645543         70  66% Fertilización
+    ## 6                 2.81364394         78  66% Fertilización
+    ## 7                 3.80805327         84  66% Fertilización
+    ## 8                 5.16196727         91  66% Fertilización
+    ## 9                 6.74105246         98  66% Fertilización
+    ## 10                8.56262971        105  66% Fertilización
+    ## 11               11.61987114        115  66% Fertilización
 
 ``` r
 RENDIMIENTOs_savia_33_102 <- Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_33_102,a_33_102)
@@ -3286,17 +2928,17 @@ Tabla_RENDIMIENTOs_savia_33_102
 ```
 
     ##    RENDIMIENTOs_savia_33_102 DDS_33_102 TRATAMIENTO_33_102
-    ## 1                 -1.3058328         36  33% Fertilización
-    ## 2                 -0.7512525         45  33% Fertilización
-    ## 3                 -0.1548315         53  33% Fertilización
-    ## 4                  0.5389643         61  33% Fertilización
-    ## 5                  1.4358781         70  33% Fertilización
-    ## 6                  2.3365955         78  33% Fertilización
-    ## 7                  3.0760359         84  33% Fertilización
-    ## 8                  4.0079437         91  33% Fertilización
-    ## 9                  5.0144042         98  33% Fertilización
-    ## 10                 6.0954172        105  33% Fertilización
-    ## 11                 7.7690476        115  33% Fertilización
+    ## 1               -0.216083409         36  33% Fertilización
+    ## 2                0.002482194         45  33% Fertilización
+    ## 3                0.286333882         53  33% Fertilización
+    ## 4                0.670215865         61  33% Fertilización
+    ## 5                1.240450472         70  33% Fertilización
+    ## 6                1.887029937         78  33% Fertilización
+    ## 7                2.467748261         84  33% Fertilización
+    ## 8                3.258411260         91  33% Fertilización
+    ## 9                4.180570451         98  33% Fertilización
+    ## 10               5.244340925        105  33% Fertilización
+    ## 11               7.029718500        115  33% Fertilización
 
 ``` r
 RENDIMIENTOs_savia_0_102 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_0_39,ymax_0_39,k_0_39,lag_0_39)
@@ -3319,11 +2961,14 @@ Tabla_RENDIMIENTOs_savia_0_102
     ## 10                6.1855946       105  0% Fertilización
     ## 11                8.2968957       115  0% Fertilización
 
-### 5) RENDIMIENTO V.S. CONTENIDO EN SAVIA
+# 5) RENDIMIENTO V.S. CONTENIDO EN SAVIA
 
-# NO3
+En este apartado, se realiza el mismo procedimiento utilizado en el
+apartado número tres, pero orientado al rendimiento del cultivo.
 
-# CPI 1
+## NO3
+
+### CPI 1
 
 ``` r
 library(dplyr)
@@ -3332,12 +2977,7 @@ mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_RENDIMIENTOs_savia_0_1, mccain_savia_0_1$NO3)
 colnames(Tabla_0_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3345,12 +2985,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_RENDIMIENTOs_savia_33_1, mccain_savia_33_1$NO3)
 colnames(Tabla_33_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3358,12 +2993,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_RENDIMIENTOs_savia_66_1, mccain_savia_66_1$NO3)
 colnames(Tabla_66_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3371,79 +3001,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_RENDIMIENTOs_savia_100_1, mccain_savia_100_1$NO3)
 colnames(Tabla_100_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento      NO3
-    ## 1     CIP 1 -0.025824691  36   0% Fertilización 9900.000
-    ## 2     CIP 1 -0.009921534  45   0% Fertilización 4525.000
-    ## 3     CIP 1  0.055075669  53   0% Fertilización 5708.333
-    ## 4     CIP 1  0.244713328  61   0% Fertilización 5550.000
-    ## 5     CIP 1  0.728464325  70   0% Fertilización 6775.000
-    ## 6     CIP 1  1.480209275  78   0% Fertilización 6258.333
-    ## 7     CIP 1  2.251130886  84   0% Fertilización 5191.667
-    ## 8     CIP 1  3.342140467  91   0% Fertilización 5783.333
-    ## 9     CIP 1  4.578001866  98   0% Fertilización 4541.667
-    ## 10    CIP 1  5.883286437 105   0% Fertilización 4150.000
-    ## 11    CIP 1  7.730052676 115   0% Fertilización 2922.222
-    ## 12    CIP 1  0.024258896  36  33% Fertilización 9900.000
-    ## 13    CIP 1  0.034620873  45  33% Fertilización 4041.667
-    ## 14    CIP 1  0.082656964  53  33% Fertilización 5725.000
-    ## 15    CIP 1  0.240214439  61  33% Fertilización 6250.000
-    ## 16    CIP 1  0.691941174  70  33% Fertilización 7558.333
-    ## 17    CIP 1  1.470152485  78  33% Fertilización 6658.333
-    ## 18    CIP 1  2.331969974  84  33% Fertilización 5333.333
-    ## 19    CIP 1  3.634958219  91  33% Fertilización 4583.333
-    ## 20    CIP 1  5.208271470  98  33% Fertilización 3158.333
-    ## 21    CIP 1  6.967820629 105  33% Fertilización 2325.000
-    ## 22    CIP 1  9.614253263 115  33% Fertilización 2444.444
-    ## 23    CIP 1  0.026029923  36  66% Fertilización 9900.000
-    ## 24    CIP 1  0.036094826  45  66% Fertilización 4400.000
-    ## 25    CIP 1  0.082877828  53  66% Fertilización 6025.000
-    ## 26    CIP 1  0.237252357  61  66% Fertilización 5758.333
-    ## 27    CIP 1  0.683714712  70  66% Fertilización 7208.333
-    ## 28    CIP 1  1.460169325  78  66% Fertilización 6583.333
-    ## 29    CIP 1  2.326994976  84  66% Fertilización 6391.667
-    ## 30    CIP 1  3.647585071  91  66% Fertilización 6575.000
-    ## 31    CIP 1  5.254798884  98  66% Fertilización 3008.333
-    ## 32    CIP 1  7.065847124 105  66% Fertilización 3475.000
-    ## 33    CIP 1  9.813106509 115  66% Fertilización 2180.000
-    ## 34    CIP 1  0.234915361  36 100% Fertilización 9900.000
-    ## 35    CIP 1  0.235775517  45 100% Fertilización 4525.000
-    ## 36    CIP 1  0.245817078  53 100% Fertilización 5708.333
-    ## 37    CIP 1  0.307131020  61 100% Fertilización 5550.000
-    ## 38    CIP 1  0.580922759  70 100% Fertilización 6775.000
-    ## 39    CIP 1  1.198833311  78 100% Fertilización 6258.333
-    ## 40    CIP 1  1.984860676  84 100% Fertilización 5191.667
-    ## 41    CIP 1  3.270910057  91 100% Fertilización 5783.333
-    ## 42    CIP 1  4.893758916  98 100% Fertilización 4541.667
-    ## 43    CIP 1  6.733647469 105 100% Fertilización 4150.000
-    ## 44    CIP 1  9.467276906 115 100% Fertilización 2922.222
+    ##   Variedad  RENDIMIENTO DDS      Tratamiento      NO3
+    ## 1    CIP 1 -0.025824691  36 0% Fertilización 9900.000
+    ## 2    CIP 1 -0.009921534  45 0% Fertilización 4525.000
+    ## 3    CIP 1  0.055075669  53 0% Fertilización 5708.333
+    ## 4    CIP 1  0.244713328  61 0% Fertilización 5550.000
+    ## 5    CIP 1  0.728464325  70 0% Fertilización 6775.000
+    ## 6    CIP 1  1.480209275  78 0% Fertilización 6258.333
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_RENDIMIENTOs_savia_0_39, mccain_savia_0_39$NO3)
 colnames(Tabla_0_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3451,12 +3033,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_RENDIMIENTOs_savia_33_39, mccain_savia_33_39$NO3)
 colnames(Tabla_33_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3464,12 +3041,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_RENDIMIENTOs_savia_66_39, mccain_savia_66_39$NO3)
 colnames(Tabla_66_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3477,79 +3049,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_RENDIMIENTOs_savia_100_39, mccain_savia_100_39$NO3)
 colnames(Tabla_100_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento      NO3
-    ## 1    CIP 39  0.248431452  36   0% Fertilización 9508.333
-    ## 2    CIP 39  0.248485627  45   0% Fertilización 7866.667
-    ## 3    CIP 39  0.250752204  53   0% Fertilización 7958.333
-    ## 4    CIP 39  0.280375295  61   0% Fertilización 8108.333
-    ## 5    CIP 39  0.488441066  70   0% Fertilización 7100.000
-    ## 6    CIP 39  1.063079193  78   0% Fertilización 8316.667
-    ## 7    CIP 39  1.836889581  84   0% Fertilización 7433.333
-    ## 8    CIP 39  3.092508425  91   0% Fertilización 7108.333
-    ## 9    CIP 39  4.600284909  98   0% Fertilización 6383.333
-    ## 10   CIP 39  6.185594638 105   0% Fertilización 5066.667
-    ## 11   CIP 39  8.296895750 115   0% Fertilización 5022.222
-    ## 12   CIP 39  0.199068490  36  33% Fertilización 9508.333
-    ## 13   CIP 39  0.199068933  45  33% Fertilización 7866.667
-    ## 14   CIP 39  0.199336699  53  33% Fertilización 7958.333
-    ## 15   CIP 39  0.213946006  61  33% Fertilización 8108.333
-    ## 16   CIP 39  0.433504874  70  33% Fertilización 7100.000
-    ## 17   CIP 39  1.237941111  78  33% Fertilización 8316.667
-    ## 18   CIP 39  2.374477965  84  33% Fertilización 7433.333
-    ## 19   CIP 39  4.127779024  91  33% Fertilización 7108.333
-    ## 20   CIP 39  6.018117517  98  33% Fertilización 6383.333
-    ## 21   CIP 39  7.753983072 105  33% Fertilización 5066.667
-    ## 22   CIP 39  9.695462653 115  33% Fertilización 5022.222
-    ## 23   CIP 39 -0.385161668  36  66% Fertilización 9375.000
-    ## 24   CIP 39 -0.154761674  45  66% Fertilización 7166.667
-    ## 25   CIP 39  0.212836561  53  66% Fertilización 8133.333
-    ## 26   CIP 39  0.783305964  61  66% Fertilización 7491.667
-    ## 27   CIP 39  1.708102905  70  66% Fertilización 6491.667
-    ## 28   CIP 39  2.792326971  78  66% Fertilización 8808.333
-    ## 29   CIP 39  3.758570905  84  66% Fertilización 7908.333
-    ## 30   CIP 39  5.030299825  91  66% Fertilización 7308.333
-    ## 31   CIP 39  6.426896736  98  66% Fertilización 6991.667
-    ## 32   CIP 39  7.911183412 105  66% Fertilización 5391.667
-    ## 33   CIP 39 10.107660753 115  66% Fertilización 5837.500
-    ## 34   CIP 39 -0.029894866  36 100% Fertilización 8550.000
-    ## 35   CIP 39  0.009230284  45 100% Fertilización 7066.667
-    ## 36   CIP 39  0.137843175  53 100% Fertilización 6675.000
-    ## 37   CIP 39  0.464144229  61 100% Fertilización 7491.667
-    ## 38   CIP 39  1.222083449  70 100% Fertilización 6341.667
-    ## 39   CIP 39  2.340062505  78 100% Fertilización 8466.667
-    ## 40   CIP 39  3.461665179  84 100% Fertilización 8100.000
-    ## 41   CIP 39  5.036862561  91 100% Fertilización 6875.000
-    ## 42   CIP 39  6.823906844  98 100% Fertilización 7091.667
-    ## 43   CIP 39  8.727988993 105 100% Fertilización 5308.333
-    ## 44   CIP 39 11.469060604 115 100% Fertilización 6666.667
+    ##   Variedad RENDIMIENTO DDS      Tratamiento      NO3
+    ## 1   CIP 39   0.2484315  36 0% Fertilización 9508.333
+    ## 2   CIP 39   0.2484856  45 0% Fertilización 7866.667
+    ## 3   CIP 39   0.2507522  53 0% Fertilización 7958.333
+    ## 4   CIP 39   0.2803753  61 0% Fertilización 8108.333
+    ## 5   CIP 39   0.4884411  70 0% Fertilización 7100.000
+    ## 6   CIP 39   1.0630792  78 0% Fertilización 8316.667
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_RENDIMIENTOs_savia_0_102, mccain_savia_0_102$NO3)
 colnames(Tabla_0_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3557,12 +3081,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_RENDIMIENTOs_savia_33_102, mccain_savia_33_102$NO3)
 colnames(Tabla_33_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3570,12 +3089,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_RENDIMIENTOs_savia_66_102, mccain_savia_66_102$NO3)
 colnames(Tabla_66_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
@@ -3583,67 +3097,24 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(NO3 = mean(NO3, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_RENDIMIENTOs_savia_100_102, mccain_savia_100_102$NO3)
 colnames(Tabla_100_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','NO3')
 
 Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad RENDIMIENTO DDS        Tratamiento       NO3
-    ## 1   CIP 102  0.24843145  36   0% Fertilización 9750.0000
-    ## 2   CIP 102  0.24848563  45   0% Fertilización 5816.6667
-    ## 3   CIP 102  0.25075220  53   0% Fertilización 7075.0000
-    ## 4   CIP 102  0.28037530  61   0% Fertilización 6266.6667
-    ## 5   CIP 102  0.48844107  70   0% Fertilización 5491.6667
-    ## 6   CIP 102  1.06307919  78   0% Fertilización 3816.6667
-    ## 7   CIP 102  1.83688958  84   0% Fertilización 1775.0000
-    ## 8   CIP 102  3.09250843  91   0% Fertilización 1533.3333
-    ## 9   CIP 102  4.60028491  98   0% Fertilización 1010.8333
-    ## 10  CIP 102  6.18559464 105   0% Fertilización  745.0000
-    ## 11  CIP 102  8.29689575 115   0% Fertilización 1197.7778
-    ## 12  CIP 102 -1.30583280  36  33% Fertilización 9741.6667
-    ## 13  CIP 102 -0.75125255  45  33% Fertilización 5450.0000
-    ## 14  CIP 102 -0.15483154  53  33% Fertilización 6783.3333
-    ## 15  CIP 102  0.53896434  61  33% Fertilización 6175.0000
-    ## 16  CIP 102  1.43587808  70  33% Fertilización 5091.6667
-    ## 17  CIP 102  2.33659553  78  33% Fertilización 5291.6667
-    ## 18  CIP 102  3.07603587  84  33% Fertilización 2833.3333
-    ## 19  CIP 102  4.00794370  91  33% Fertilización 2841.6667
-    ## 20  CIP 102  5.01440416  98  33% Fertilización 1150.8333
-    ## 21  CIP 102  6.09541725 105  33% Fertilización  779.1667
-    ## 22  CIP 102  7.76904764 115  33% Fertilización  924.0000
-    ## 23  CIP 102 -2.66736988  36  66% Fertilización 9641.6667
-    ## 24  CIP 102 -1.71654272  45  66% Fertilización 5475.0000
-    ## 25  CIP 102 -0.69397962  53  66% Fertilización 6908.3333
-    ## 26  CIP 102  0.49553256  61  66% Fertilización 5575.0000
-    ## 27  CIP 102  2.03329007  70  66% Fertilización 5066.6667
-    ## 28  CIP 102  3.57756904  78  66% Fertilización 4391.6667
-    ## 29  CIP 102  4.84533859  84  66% Fertilización 3416.6667
-    ## 30  CIP 102  6.44309344  91  66% Fertilización 2133.3333
-    ## 31  CIP 102  8.16866866  98  66% Fertilización 1697.5000
-    ## 32  CIP 102 10.02206428 105  66% Fertilización  876.6667
-    ## 33  CIP 102 12.89150155 115  66% Fertilización 1086.2500
-    ## 34  CIP 102 -2.83763350  36 100% Fertilización 9575.0000
-    ## 35  CIP 102 -1.95577822  45 100% Fertilización 4975.0000
-    ## 36  CIP 102 -1.00739065  53 100% Fertilización 6741.6667
-    ## 37  CIP 102  0.09583572  61 100% Fertilización 5841.6667
-    ## 38  CIP 102  1.52204611  70 100% Fertilización 5075.0000
-    ## 39  CIP 102  2.95430490  78 100% Fertilización 4958.3333
-    ## 40  CIP 102  4.13011194  84 100% Fertilización 3808.3333
-    ## 41  CIP 102  5.61196752  91 100% Fertilización 2975.0000
-    ## 42  CIP 102  7.21237155  98 100% Fertilización 1266.6667
-    ## 43  CIP 102  8.93132403 105 100% Fertilización  888.3333
-    ## 44  CIP 102 11.59261569 115 100% Fertilización  529.0909
+    ##   Variedad RENDIMIENTO DDS      Tratamiento      NO3
+    ## 1  CIP 102   0.2484315  36 0% Fertilización 9750.000
+    ## 2  CIP 102   0.2484856  45 0% Fertilización 5816.667
+    ## 3  CIP 102   0.2507522  53 0% Fertilización 7075.000
+    ## 4  CIP 102   0.2803753  61 0% Fertilización 6266.667
+    ## 5  CIP 102   0.4884411  70 0% Fertilización 5491.667
+    ## 6  CIP 102   1.0630792  78 0% Fertilización 3816.667
 
-# Gráficos
+### Gráficos
 
 ``` r
 NO3CPI1 <-  Tabla_1%>%
@@ -3652,12 +3123,7 @@ NO3CPI1 <-  Tabla_1%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -3668,7 +3134,7 @@ ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -3677,12 +3143,7 @@ NO3CPI39 <-  Tabla_39%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -3693,7 +3154,7 @@ ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATA
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-56-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-61-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -3702,12 +3163,7 @@ NO3CPI102 <-  Tabla_102%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -3718,23 +3174,18 @@ ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRAT
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-56-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-61-3.png)<!-- -->
 
-# Ca
+## Ca
 
-# CPI 1
+### CPI 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_RENDIMIENTOs_savia_0_1, mccain_savia_0_1$Ca)
 colnames(Tabla_0_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3742,12 +3193,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_RENDIMIENTOs_savia_33_1, mccain_savia_33_1$Ca)
 colnames(Tabla_33_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3755,12 +3201,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_RENDIMIENTOs_savia_66_1, mccain_savia_66_1$Ca)
 colnames(Tabla_66_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3768,79 +3209,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_RENDIMIENTOs_savia_100_1, mccain_savia_100_1$Ca)
 colnames(Tabla_100_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento       Ca
-    ## 1     CIP 1 -0.025824691  36   0% Fertilización 8.833333
-    ## 2     CIP 1 -0.009921534  45   0% Fertilización 4.083333
-    ## 3     CIP 1  0.055075669  53   0% Fertilización 4.000000
-    ## 4     CIP 1  0.244713328  61   0% Fertilización 4.000000
-    ## 5     CIP 1  0.728464325  70   0% Fertilización 4.000000
-    ## 6     CIP 1  1.480209275  78   0% Fertilización 4.000000
-    ## 7     CIP 1  2.251130886  84   0% Fertilización 4.000000
-    ## 8     CIP 1  3.342140467  91   0% Fertilización 4.000000
-    ## 9     CIP 1  4.578001866  98   0% Fertilización 4.000000
-    ## 10    CIP 1  5.883286437 105   0% Fertilización 4.000000
-    ## 11    CIP 1  7.730052676 115   0% Fertilización 5.875000
-    ## 12    CIP 1  0.024258896  36  33% Fertilización 4.333333
-    ## 13    CIP 1  0.034620873  45  33% Fertilización 4.000000
-    ## 14    CIP 1  0.082656964  53  33% Fertilización 4.000000
-    ## 15    CIP 1  0.240214439  61  33% Fertilización 4.000000
-    ## 16    CIP 1  0.691941174  70  33% Fertilización 4.000000
-    ## 17    CIP 1  1.470152485  78  33% Fertilización 4.000000
-    ## 18    CIP 1  2.331969974  84  33% Fertilización 4.000000
-    ## 19    CIP 1  3.634958219  91  33% Fertilización 4.000000
-    ## 20    CIP 1  5.208271470  98  33% Fertilización 4.000000
-    ## 21    CIP 1  6.967820629 105  33% Fertilización 4.000000
-    ## 22    CIP 1  9.614253263 115  33% Fertilización 4.000000
-    ## 23    CIP 1  0.026029923  36  66% Fertilización 4.666667
-    ## 24    CIP 1  0.036094826  45  66% Fertilización 4.000000
-    ## 25    CIP 1  0.082877828  53  66% Fertilización 4.000000
-    ## 26    CIP 1  0.237252357  61  66% Fertilización 4.000000
-    ## 27    CIP 1  0.683714712  70  66% Fertilización 4.000000
-    ## 28    CIP 1  1.460169325  78  66% Fertilización 4.000000
-    ## 29    CIP 1  2.326994976  84  66% Fertilización 4.000000
-    ## 30    CIP 1  3.647585071  91  66% Fertilización 4.000000
-    ## 31    CIP 1  5.254798884  98  66% Fertilización 4.000000
-    ## 32    CIP 1  7.065847124 105  66% Fertilización 4.000000
-    ## 33    CIP 1  9.813106509 115  66% Fertilización 4.000000
-    ## 34    CIP 1  0.234915361  36 100% Fertilización 9.416667
-    ## 35    CIP 1  0.235775517  45 100% Fertilización 4.083333
-    ## 36    CIP 1  0.245817078  53 100% Fertilización 4.000000
-    ## 37    CIP 1  0.307131020  61 100% Fertilización 4.000000
-    ## 38    CIP 1  0.580922759  70 100% Fertilización 4.000000
-    ## 39    CIP 1  1.198833311  78 100% Fertilización 4.000000
-    ## 40    CIP 1  1.984860676  84 100% Fertilización 4.000000
-    ## 41    CIP 1  3.270910057  91 100% Fertilización 4.000000
-    ## 42    CIP 1  4.893758916  98 100% Fertilización 4.000000
-    ## 43    CIP 1  6.733647469 105 100% Fertilización 4.000000
-    ## 44    CIP 1  9.467276906 115 100% Fertilización 4.000000
+    ##   Variedad  RENDIMIENTO DDS      Tratamiento       Ca
+    ## 1    CIP 1 -0.025824691  36 0% Fertilización 8.833333
+    ## 2    CIP 1 -0.009921534  45 0% Fertilización 4.083333
+    ## 3    CIP 1  0.055075669  53 0% Fertilización 4.000000
+    ## 4    CIP 1  0.244713328  61 0% Fertilización 4.000000
+    ## 5    CIP 1  0.728464325  70 0% Fertilización 4.000000
+    ## 6    CIP 1  1.480209275  78 0% Fertilización 4.000000
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_RENDIMIENTOs_savia_0_39, mccain_savia_0_39$Ca)
 colnames(Tabla_0_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3848,12 +3241,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_RENDIMIENTOs_savia_33_39, mccain_savia_33_39$Ca)
 colnames(Tabla_33_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3861,12 +3249,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_RENDIMIENTOs_savia_66_39, mccain_savia_66_39$Ca)
 colnames(Tabla_66_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3874,79 +3257,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_RENDIMIENTOs_savia_100_39, mccain_savia_100_39$Ca)
 colnames(Tabla_100_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento        Ca
-    ## 1    CIP 39  0.248431452  36   0% Fertilización 12.166667
-    ## 2    CIP 39  0.248485627  45   0% Fertilización  6.416667
-    ## 3    CIP 39  0.250752204  53   0% Fertilización  4.916667
-    ## 4    CIP 39  0.280375295  61   0% Fertilización  4.000000
-    ## 5    CIP 39  0.488441066  70   0% Fertilización  4.000000
-    ## 6    CIP 39  1.063079193  78   0% Fertilización  4.000000
-    ## 7    CIP 39  1.836889581  84   0% Fertilización  4.000000
-    ## 8    CIP 39  3.092508425  91   0% Fertilización  4.000000
-    ## 9    CIP 39  4.600284909  98   0% Fertilización  4.000000
-    ## 10   CIP 39  6.185594638 105   0% Fertilización  4.000000
-    ## 11   CIP 39  8.296895750 115   0% Fertilización  4.000000
-    ## 12   CIP 39  0.199068490  36  33% Fertilización 17.916667
-    ## 13   CIP 39  0.199068933  45  33% Fertilización  7.083333
-    ## 14   CIP 39  0.199336699  53  33% Fertilización  5.666667
-    ## 15   CIP 39  0.213946006  61  33% Fertilización  5.416667
-    ## 16   CIP 39  0.433504874  70  33% Fertilización  4.000000
-    ## 17   CIP 39  1.237941111  78  33% Fertilización  4.000000
-    ## 18   CIP 39  2.374477965  84  33% Fertilización  4.000000
-    ## 19   CIP 39  4.127779024  91  33% Fertilización  4.000000
-    ## 20   CIP 39  6.018117517  98  33% Fertilización  4.000000
-    ## 21   CIP 39  7.753983072 105  33% Fertilización  4.000000
-    ## 22   CIP 39  9.695462653 115  33% Fertilización  4.000000
-    ## 23   CIP 39 -0.385161668  36  66% Fertilización 13.000000
-    ## 24   CIP 39 -0.154761674  45  66% Fertilización  4.583333
-    ## 25   CIP 39  0.212836561  53  66% Fertilización  4.416667
-    ## 26   CIP 39  0.783305964  61  66% Fertilización  4.000000
-    ## 27   CIP 39  1.708102905  70  66% Fertilización  4.000000
-    ## 28   CIP 39  2.792326971  78  66% Fertilización  4.000000
-    ## 29   CIP 39  3.758570905  84  66% Fertilización  4.000000
-    ## 30   CIP 39  5.030299825  91  66% Fertilización  4.000000
-    ## 31   CIP 39  6.426896736  98  66% Fertilización  4.000000
-    ## 32   CIP 39  7.911183412 105  66% Fertilización  4.000000
-    ## 33   CIP 39 10.107660753 115  66% Fertilización  4.000000
-    ## 34   CIP 39 -0.029894866  36 100% Fertilización 12.000000
-    ## 35   CIP 39  0.009230284  45 100% Fertilización  6.583333
-    ## 36   CIP 39  0.137843175  53 100% Fertilización  4.916667
-    ## 37   CIP 39  0.464144229  61 100% Fertilización  4.000000
-    ## 38   CIP 39  1.222083449  70 100% Fertilización  4.000000
-    ## 39   CIP 39  2.340062505  78 100% Fertilización  4.000000
-    ## 40   CIP 39  3.461665179  84 100% Fertilización  4.000000
-    ## 41   CIP 39  5.036862561  91 100% Fertilización  4.000000
-    ## 42   CIP 39  6.823906844  98 100% Fertilización  4.000000
-    ## 43   CIP 39  8.727988993 105 100% Fertilización  4.000000
-    ## 44   CIP 39 11.469060604 115 100% Fertilización  4.000000
+    ##   Variedad RENDIMIENTO DDS      Tratamiento        Ca
+    ## 1   CIP 39   0.2484315  36 0% Fertilización 12.166667
+    ## 2   CIP 39   0.2484856  45 0% Fertilización  6.416667
+    ## 3   CIP 39   0.2507522  53 0% Fertilización  4.916667
+    ## 4   CIP 39   0.2803753  61 0% Fertilización  4.000000
+    ## 5   CIP 39   0.4884411  70 0% Fertilización  4.000000
+    ## 6   CIP 39   1.0630792  78 0% Fertilización  4.000000
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_RENDIMIENTOs_savia_0_102, mccain_savia_0_102$Ca)
 colnames(Tabla_0_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3954,12 +3289,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_RENDIMIENTOs_savia_33_102, mccain_savia_33_102$Ca)
 colnames(Tabla_33_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3967,12 +3297,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_RENDIMIENTOs_savia_66_102, mccain_savia_66_102$Ca)
 colnames(Tabla_66_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
@@ -3980,67 +3305,24 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(Ca = mean(Ca, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_RENDIMIENTOs_savia_100_102, mccain_savia_100_102$Ca)
 colnames(Tabla_100_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','Ca')
 
 Tabla_102 <- rbind(Tabla_0_102,Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad RENDIMIENTO DDS        Tratamiento       Ca
-    ## 1   CIP 102  0.24843145  36   0% Fertilización 4.000000
-    ## 2   CIP 102  0.24848563  45   0% Fertilización 4.000000
-    ## 3   CIP 102  0.25075220  53   0% Fertilización 4.000000
-    ## 4   CIP 102  0.28037530  61   0% Fertilización 4.000000
-    ## 5   CIP 102  0.48844107  70   0% Fertilización 4.000000
-    ## 6   CIP 102  1.06307919  78   0% Fertilización 4.000000
-    ## 7   CIP 102  1.83688958  84   0% Fertilización 4.000000
-    ## 8   CIP 102  3.09250843  91   0% Fertilización 4.000000
-    ## 9   CIP 102  4.60028491  98   0% Fertilización 4.000000
-    ## 10  CIP 102  6.18559464 105   0% Fertilización 4.000000
-    ## 11  CIP 102  8.29689575 115   0% Fertilización 4.000000
-    ## 12  CIP 102 -1.30583280  36  33% Fertilización 4.000000
-    ## 13  CIP 102 -0.75125255  45  33% Fertilización 4.000000
-    ## 14  CIP 102 -0.15483154  53  33% Fertilización 4.000000
-    ## 15  CIP 102  0.53896434  61  33% Fertilización 4.000000
-    ## 16  CIP 102  1.43587808  70  33% Fertilización 4.000000
-    ## 17  CIP 102  2.33659553  78  33% Fertilización 4.000000
-    ## 18  CIP 102  3.07603587  84  33% Fertilización 4.000000
-    ## 19  CIP 102  4.00794370  91  33% Fertilización 4.000000
-    ## 20  CIP 102  5.01440416  98  33% Fertilización 4.000000
-    ## 21  CIP 102  6.09541725 105  33% Fertilización 4.000000
-    ## 22  CIP 102  7.76904764 115  33% Fertilización 4.000000
-    ## 23  CIP 102 -2.66736988  36  66% Fertilización 4.000000
-    ## 24  CIP 102 -1.71654272  45  66% Fertilización 4.000000
-    ## 25  CIP 102 -0.69397962  53  66% Fertilización 4.000000
-    ## 26  CIP 102  0.49553256  61  66% Fertilización 4.000000
-    ## 27  CIP 102  2.03329007  70  66% Fertilización 4.000000
-    ## 28  CIP 102  3.57756904  78  66% Fertilización 4.000000
-    ## 29  CIP 102  4.84533859  84  66% Fertilización 4.000000
-    ## 30  CIP 102  6.44309344  91  66% Fertilización 4.000000
-    ## 31  CIP 102  8.16866866  98  66% Fertilización 4.000000
-    ## 32  CIP 102 10.02206428 105  66% Fertilización 4.000000
-    ## 33  CIP 102 12.89150155 115  66% Fertilización 4.000000
-    ## 34  CIP 102 -2.83763350  36 100% Fertilización 4.083333
-    ## 35  CIP 102 -1.95577822  45 100% Fertilización 4.000000
-    ## 36  CIP 102 -1.00739065  53 100% Fertilización 4.000000
-    ## 37  CIP 102  0.09583572  61 100% Fertilización 4.000000
-    ## 38  CIP 102  1.52204611  70 100% Fertilización 4.000000
-    ## 39  CIP 102  2.95430490  78 100% Fertilización 4.000000
-    ## 40  CIP 102  4.13011194  84 100% Fertilización 4.000000
-    ## 41  CIP 102  5.61196752  91 100% Fertilización 4.000000
-    ## 42  CIP 102  7.21237155  98 100% Fertilización 4.000000
-    ## 43  CIP 102  8.93132403 105 100% Fertilización 4.000000
-    ## 44  CIP 102 11.59261569 115 100% Fertilización 4.000000
+    ##   Variedad RENDIMIENTO DDS      Tratamiento Ca
+    ## 1  CIP 102   0.2484315  36 0% Fertilización  4
+    ## 2  CIP 102   0.2484856  45 0% Fertilización  4
+    ## 3  CIP 102   0.2507522  53 0% Fertilización  4
+    ## 4  CIP 102   0.2803753  61 0% Fertilización  4
+    ## 5  CIP 102   0.4884411  70 0% Fertilización  4
+    ## 6  CIP 102   1.0630792  78 0% Fertilización  4
 
-# Gráficos
+### Gráficos
 
 ``` r
 CaCPI1 <-  Tabla_1%>%
@@ -4049,12 +3331,7 @@ CaCPI1 <-  Tabla_1%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,20,1))+
@@ -4065,7 +3342,7 @@ ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -4074,12 +3351,7 @@ CaCPI39 <-  Tabla_39%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,20,2))+
@@ -4090,7 +3362,7 @@ ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-60-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-65-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -4099,12 +3371,7 @@ CaCPI102 <-  Tabla_102%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,5,0.01))+
@@ -4115,23 +3382,18 @@ ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-60-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-65-3.png)<!-- -->
 
-# K
+## K
 
-# CPI 1
+### CPI 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_1 <- cbind(mccain_savia_0_1$Variedad,Tabla_RENDIMIENTOs_savia_0_1, mccain_savia_0_1$K)
 colnames(Tabla_0_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4139,12 +3401,7 @@ mccain_savia_33_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_1 <- cbind(mccain_savia_33_1$Variedad,Tabla_RENDIMIENTOs_savia_33_1, mccain_savia_33_1$K)
 colnames(Tabla_33_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4152,12 +3409,7 @@ mccain_savia_66_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_1 <- cbind(mccain_savia_66_1$Variedad,Tabla_RENDIMIENTOs_savia_66_1, mccain_savia_66_1$K)
 colnames(Tabla_66_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4165,79 +3417,31 @@ mccain_savia_100_1 <- mccain_savia %>%
   filter(Variedad =="CIP 1", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_1 <- cbind(mccain_savia_100_1$Variedad,Tabla_RENDIMIENTOs_savia_100_1, mccain_savia_100_1$K)
 colnames(Tabla_100_1) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
 Tabla_1 <- rbind(Tabla_0_1,Tabla_33_1, Tabla_66_1, Tabla_100_1)
 
-Tabla_1
+head(Tabla_1)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento        K
-    ## 1     CIP 1 -0.025824691  36   0% Fertilización 5508.333
-    ## 2     CIP 1 -0.009921534  45   0% Fertilización 5375.000
-    ## 3     CIP 1  0.055075669  53   0% Fertilización 7966.667
-    ## 4     CIP 1  0.244713328  61   0% Fertilización 7625.000
-    ## 5     CIP 1  0.728464325  70   0% Fertilización 6191.667
-    ## 6     CIP 1  1.480209275  78   0% Fertilización 6183.333
-    ## 7     CIP 1  2.251130886  84   0% Fertilización 9800.000
-    ## 8     CIP 1  3.342140467  91   0% Fertilización 8191.667
-    ## 9     CIP 1  4.578001866  98   0% Fertilización 7683.333
-    ## 10    CIP 1  5.883286437 105   0% Fertilización 9183.333
-    ## 11    CIP 1  7.730052676 115   0% Fertilización 9162.500
-    ## 12    CIP 1  0.024258896  36  33% Fertilización 5758.333
-    ## 13    CIP 1  0.034620873  45  33% Fertilización 5358.333
-    ## 14    CIP 1  0.082656964  53  33% Fertilización 7733.333
-    ## 15    CIP 1  0.240214439  61  33% Fertilización 7158.333
-    ## 16    CIP 1  0.691941174  70  33% Fertilización 6583.333
-    ## 17    CIP 1  1.470152485  78  33% Fertilización 6266.667
-    ## 18    CIP 1  2.331969974  84  33% Fertilización 9233.333
-    ## 19    CIP 1  3.634958219  91  33% Fertilización 8466.667
-    ## 20    CIP 1  5.208271470  98  33% Fertilización 8000.000
-    ## 21    CIP 1  6.967820629 105  33% Fertilización 8475.000
-    ## 22    CIP 1  9.614253263 115  33% Fertilización 9000.000
-    ## 23    CIP 1  0.026029923  36  66% Fertilización 5616.667
-    ## 24    CIP 1  0.036094826  45  66% Fertilización 4883.333
-    ## 25    CIP 1  0.082877828  53  66% Fertilización 7816.667
-    ## 26    CIP 1  0.237252357  61  66% Fertilización 6916.667
-    ## 27    CIP 1  0.683714712  70  66% Fertilización 6225.000
-    ## 28    CIP 1  1.460169325  78  66% Fertilización 6008.333
-    ## 29    CIP 1  2.326994976  84  66% Fertilización 9450.000
-    ## 30    CIP 1  3.647585071  91  66% Fertilización 8016.667
-    ## 31    CIP 1  5.254798884  98  66% Fertilización 8216.667
-    ## 32    CIP 1  7.065847124 105  66% Fertilización 8016.667
-    ## 33    CIP 1  9.813106509 115  66% Fertilización 8760.000
-    ## 34    CIP 1  0.234915361  36 100% Fertilización 5575.000
-    ## 35    CIP 1  0.235775517  45 100% Fertilización 4833.333
-    ## 36    CIP 1  0.245817078  53 100% Fertilización 8175.000
-    ## 37    CIP 1  0.307131020  61 100% Fertilización 6616.667
-    ## 38    CIP 1  0.580922759  70 100% Fertilización 6358.333
-    ## 39    CIP 1  1.198833311  78 100% Fertilización 6000.000
-    ## 40    CIP 1  1.984860676  84 100% Fertilización 9508.333
-    ## 41    CIP 1  3.270910057  91 100% Fertilización 7966.667
-    ## 42    CIP 1  4.893758916  98 100% Fertilización 7533.333
-    ## 43    CIP 1  6.733647469 105 100% Fertilización 8175.000
-    ## 44    CIP 1  9.467276906 115 100% Fertilización 8844.444
+    ##   Variedad  RENDIMIENTO DDS      Tratamiento        K
+    ## 1    CIP 1 -0.025824691  36 0% Fertilización 5508.333
+    ## 2    CIP 1 -0.009921534  45 0% Fertilización 5375.000
+    ## 3    CIP 1  0.055075669  53 0% Fertilización 7966.667
+    ## 4    CIP 1  0.244713328  61 0% Fertilización 7625.000
+    ## 5    CIP 1  0.728464325  70 0% Fertilización 6191.667
+    ## 6    CIP 1  1.480209275  78 0% Fertilización 6183.333
 
-# CIP 39
+### CIP 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_39 <- cbind(mccain_savia_0_39$Variedad,Tabla_RENDIMIENTOs_savia_0_39, mccain_savia_0_39$K)
 colnames(Tabla_0_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4245,12 +3449,7 @@ mccain_savia_33_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_39 <- cbind(mccain_savia_33_39$Variedad,Tabla_RENDIMIENTOs_savia_33_39, mccain_savia_33_39$K)
 colnames(Tabla_33_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4258,12 +3457,7 @@ mccain_savia_66_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_39 <- cbind(mccain_savia_66_39$Variedad,Tabla_RENDIMIENTOs_savia_66_39, mccain_savia_66_39$K)
 colnames(Tabla_66_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4271,79 +3465,31 @@ mccain_savia_100_39 <- mccain_savia %>%
   filter(Variedad =="CIP 39", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_39 <- cbind(mccain_savia_100_39$Variedad,Tabla_RENDIMIENTOs_savia_100_39, mccain_savia_100_39$K)
 colnames(Tabla_100_39) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
 Tabla_39 <- rbind(Tabla_0_39,Tabla_33_39, Tabla_66_39, Tabla_100_39)
 
-Tabla_39
+head(Tabla_39)
 ```
 
-    ##    Variedad  RENDIMIENTO DDS        Tratamiento        K
-    ## 1    CIP 39  0.248431452  36   0% Fertilización 4483.333
-    ## 2    CIP 39  0.248485627  45   0% Fertilización 5041.667
-    ## 3    CIP 39  0.250752204  53   0% Fertilización 7508.333
-    ## 4    CIP 39  0.280375295  61   0% Fertilización 6966.667
-    ## 5    CIP 39  0.488441066  70   0% Fertilización 6250.000
-    ## 6    CIP 39  1.063079193  78   0% Fertilización 5900.000
-    ## 7    CIP 39  1.836889581  84   0% Fertilización 9633.333
-    ## 8    CIP 39  3.092508425  91   0% Fertilización 7233.333
-    ## 9    CIP 39  4.600284909  98   0% Fertilización 6883.333
-    ## 10   CIP 39  6.185594638 105   0% Fertilización 7750.000
-    ## 11   CIP 39  8.296895750 115   0% Fertilización 8800.000
-    ## 12   CIP 39  0.199068490  36  33% Fertilización 4741.667
-    ## 13   CIP 39  0.199068933  45  33% Fertilización 5191.667
-    ## 14   CIP 39  0.199336699  53  33% Fertilización 7925.000
-    ## 15   CIP 39  0.213946006  61  33% Fertilización 6566.667
-    ## 16   CIP 39  0.433504874  70  33% Fertilización 6233.333
-    ## 17   CIP 39  1.237941111  78  33% Fertilización 5791.667
-    ## 18   CIP 39  2.374477965  84  33% Fertilización 9591.667
-    ## 19   CIP 39  4.127779024  91  33% Fertilización 7550.000
-    ## 20   CIP 39  6.018117517  98  33% Fertilización 6841.667
-    ## 21   CIP 39  7.753983072 105  33% Fertilización 7608.333
-    ## 22   CIP 39  9.695462653 115  33% Fertilización 8866.667
-    ## 23   CIP 39 -0.385161668  36  66% Fertilización 5008.333
-    ## 24   CIP 39 -0.154761674  45  66% Fertilización 4808.333
-    ## 25   CIP 39  0.212836561  53  66% Fertilización 7983.333
-    ## 26   CIP 39  0.783305964  61  66% Fertilización 6625.000
-    ## 27   CIP 39  1.708102905  70  66% Fertilización 6616.667
-    ## 28   CIP 39  2.792326971  78  66% Fertilización 5891.667
-    ## 29   CIP 39  3.758570905  84  66% Fertilización 9733.333
-    ## 30   CIP 39  5.030299825  91  66% Fertilización 7441.667
-    ## 31   CIP 39  6.426896736  98  66% Fertilización 7125.000
-    ## 32   CIP 39  7.911183412 105  66% Fertilización 7700.000
-    ## 33   CIP 39 10.107660753 115  66% Fertilización 8825.000
-    ## 34   CIP 39 -0.029894866  36 100% Fertilización 4833.333
-    ## 35   CIP 39  0.009230284  45 100% Fertilización 5225.000
-    ## 36   CIP 39  0.137843175  53 100% Fertilización 8183.333
-    ## 37   CIP 39  0.464144229  61 100% Fertilización 6683.333
-    ## 38   CIP 39  1.222083449  70 100% Fertilización 6525.000
-    ## 39   CIP 39  2.340062505  78 100% Fertilización 5966.667
-    ## 40   CIP 39  3.461665179  84 100% Fertilización 9466.667
-    ## 41   CIP 39  5.036862561  91 100% Fertilización 7341.667
-    ## 42   CIP 39  6.823906844  98 100% Fertilización 7300.000
-    ## 43   CIP 39  8.727988993 105 100% Fertilización 8400.000
-    ## 44   CIP 39 11.469060604 115 100% Fertilización 8888.889
+    ##   Variedad RENDIMIENTO DDS      Tratamiento        K
+    ## 1   CIP 39   0.2484315  36 0% Fertilización 4483.333
+    ## 2   CIP 39   0.2484856  45 0% Fertilización 5041.667
+    ## 3   CIP 39   0.2507522  53 0% Fertilización 7508.333
+    ## 4   CIP 39   0.2803753  61 0% Fertilización 6966.667
+    ## 5   CIP 39   0.4884411  70 0% Fertilización 6250.000
+    ## 6   CIP 39   1.0630792  78 0% Fertilización 5900.000
 
-# CIP 102
+### CIP 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="0% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_0_102 <- cbind(mccain_savia_0_102$Variedad,Tabla_RENDIMIENTOs_savia_0_102, mccain_savia_0_102$K)
 colnames(Tabla_0_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4351,12 +3497,7 @@ mccain_savia_33_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="33% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_33_102 <- cbind(mccain_savia_33_102$Variedad,Tabla_RENDIMIENTOs_savia_33_102, mccain_savia_33_102$K)
 colnames(Tabla_33_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4364,12 +3505,7 @@ mccain_savia_66_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="66% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_66_102 <- cbind(mccain_savia_66_102$Variedad,Tabla_RENDIMIENTOs_savia_66_102, mccain_savia_66_102$K)
 colnames(Tabla_66_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
@@ -4377,67 +3513,24 @@ mccain_savia_100_102 <- mccain_savia %>%
   filter(Variedad =="CIP 102", Tratamiento =="100% Fertilización")%>%
   group_by(DDS,Variedad,Tratamiento)%>%
   summarise(K = mean(K, na.rm=T))
-```
 
-    ## `summarise()` has grouped output by 'DDS', 'Variedad'. You can override using
-    ## the `.groups` argument.
-
-``` r
 Tabla_100_102 <- cbind(mccain_savia_100_102$Variedad,Tabla_RENDIMIENTOs_savia_100_102, mccain_savia_100_102$K)
 colnames(Tabla_100_102) <- c('Variedad','RENDIMIENTO','DDS','Tratamiento','K')
 
 Tabla_102 <- rbind(Tabla_0_102, Tabla_33_102, Tabla_66_102, Tabla_100_102)
 
-Tabla_102
+head(Tabla_102)
 ```
 
-    ##    Variedad RENDIMIENTO DDS        Tratamiento        K
-    ## 1   CIP 102  0.24843145  36   0% Fertilización 5800.000
-    ## 2   CIP 102  0.24848563  45   0% Fertilización 5433.333
-    ## 3   CIP 102  0.25075220  53   0% Fertilización 8208.333
-    ## 4   CIP 102  0.28037530  61   0% Fertilización 7175.000
-    ## 5   CIP 102  0.48844107  70   0% Fertilización 6480.000
-    ## 6   CIP 102  1.06307919  78   0% Fertilización 6033.333
-    ## 7   CIP 102  1.83688958  84   0% Fertilización 9450.000
-    ## 8   CIP 102  3.09250843  91   0% Fertilización 8383.333
-    ## 9   CIP 102  4.60028491  98   0% Fertilización 8325.000
-    ## 10  CIP 102  6.18559464 105   0% Fertilización 8900.000
-    ## 11  CIP 102  8.29689575 115   0% Fertilización 9822.222
-    ## 12  CIP 102 -1.30583280  36  33% Fertilización 5633.333
-    ## 13  CIP 102 -0.75125255  45  33% Fertilización 5491.667
-    ## 14  CIP 102 -0.15483154  53  33% Fertilización 8075.000
-    ## 15  CIP 102  0.53896434  61  33% Fertilización 7416.667
-    ## 16  CIP 102  1.43587808  70  33% Fertilización 6283.333
-    ## 17  CIP 102  2.33659553  78  33% Fertilización 6258.333
-    ## 18  CIP 102  3.07603587  84  33% Fertilización 9408.333
-    ## 19  CIP 102  4.00794370  91  33% Fertilización 7933.333
-    ## 20  CIP 102  5.01440416  98  33% Fertilización 8791.667
-    ## 21  CIP 102  6.09541725 105  33% Fertilización 8425.000
-    ## 22  CIP 102  7.76904764 115  33% Fertilización 9700.000
-    ## 23  CIP 102 -2.66736988  36  66% Fertilización 5516.667
-    ## 24  CIP 102 -1.71654272  45  66% Fertilización 5525.000
-    ## 25  CIP 102 -0.69397962  53  66% Fertilización 8083.333
-    ## 26  CIP 102  0.49553256  61  66% Fertilización 7041.667
-    ## 27  CIP 102  2.03329007  70  66% Fertilización 6300.000
-    ## 28  CIP 102  3.57756904  78  66% Fertilización 5841.667
-    ## 29  CIP 102  4.84533859  84  66% Fertilización 9108.333
-    ## 30  CIP 102  6.44309344  91  66% Fertilización 8241.667
-    ## 31  CIP 102  8.16866866  98  66% Fertilización 7825.000
-    ## 32  CIP 102 10.02206428 105  66% Fertilización 9325.000
-    ## 33  CIP 102 12.89150155 115  66% Fertilización 9787.500
-    ## 34  CIP 102 -2.83763350  36 100% Fertilización 5358.333
-    ## 35  CIP 102 -1.95577822  45 100% Fertilización 5291.667
-    ## 36  CIP 102 -1.00739065  53 100% Fertilización 7941.667
-    ## 37  CIP 102  0.09583572  61 100% Fertilización 7283.333
-    ## 38  CIP 102  1.52204611  70 100% Fertilización 6233.333
-    ## 39  CIP 102  2.95430490  78 100% Fertilización 6333.333
-    ## 40  CIP 102  4.13011194  84 100% Fertilización 9341.667
-    ## 41  CIP 102  5.61196752  91 100% Fertilización 7891.667
-    ## 42  CIP 102  7.21237155  98 100% Fertilización 8200.000
-    ## 43  CIP 102  8.93132403 105 100% Fertilización 8841.583
-    ## 44  CIP 102 11.59261569 115 100% Fertilización 9709.091
+    ##   Variedad RENDIMIENTO DDS      Tratamiento        K
+    ## 1  CIP 102   0.2484315  36 0% Fertilización 5800.000
+    ## 2  CIP 102   0.2484856  45 0% Fertilización 5433.333
+    ## 3  CIP 102   0.2507522  53 0% Fertilización 8208.333
+    ## 4  CIP 102   0.2803753  61 0% Fertilización 7175.000
+    ## 5  CIP 102   0.4884411  70 0% Fertilización 6480.000
+    ## 6  CIP 102   1.0630792  78 0% Fertilización 6033.333
 
-# Gráficos
+### Gráficos
 
 ``` r
 KCPI1 <-  Tabla_1%>%
@@ -4446,12 +3539,7 @@ KCPI1 <-  Tabla_1%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -4462,7 +3550,7 @@ ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -4471,12 +3559,7 @@ KCPI39 <-  Tabla_39%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -4487,7 +3570,7 @@ ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-64-2.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-69-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -4496,12 +3579,7 @@ KCPI102 <-  Tabla_102%>%
             RENDIMIENTO=RENDIMIENTO,
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
-```
 
-    ## `summarise()` has grouped output by 'DDS'. You can override using the `.groups`
-    ## argument.
-
-``` r
 ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
   geom_line(size = 1)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
@@ -4512,4 +3590,9 @@ ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-64-3.png)<!-- -->
+![](mccain_savia_files/figure-gfm/unnamed-chunk-69-3.png)<!-- -->
+
+De esta forma, hemos logrado correlacionar la información existente de
+un cultivo, segmentada temporalmente, implementando técnicas de análisis
+exploratorio de datos, manejo de dataframes y modelamiento de
+información.

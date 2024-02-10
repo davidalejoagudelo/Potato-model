@@ -1,5 +1,5 @@
-Análisis del contenido de nutrientes en savia, y su relación con el
-rendimiento en plantas de Solanum tuberosum
+ANÁLISIS DEL CONTENIDO DE NUTRIENTES EN SAVIA, Y SU RELACIÓN CON EL
+RENDIMIENTO EN PLANTAS DE PAPA (SOLANUM TUBEROSUM)
 ================
 true
 

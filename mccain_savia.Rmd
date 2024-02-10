@@ -12,7 +12,7 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 ```{r message=FALSE, warning=FALSE}
-setwd("C:/Users/david/OneDrive/Escritorio/Personal/R")
+setwd("C:/Users/david/OneDrive/Escritorio/Personal/R/Data_science")
 ```
 
 # 1) CONTENIDO EN SAVIA EN EL TIEMPO

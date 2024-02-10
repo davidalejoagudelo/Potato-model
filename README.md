@@ -2,7 +2,7 @@
 
 <div align="center">
 <img src="https://github.com/davidalejoagudelo/Data_science/blob/main/papa_ciclo.jpg?raw=true">
-</div>div>
+</div>
 
 See .md document.
  

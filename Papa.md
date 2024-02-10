@@ -1,14 +1,13 @@
 ANÁLISIS DEL CONTENIDO DE NUTRIENTES EN SAVIA, Y SU RELACIÓN CON EL
 RENDIMIENTO EN PLANTAS DE PAPA (SOLANUM TUBEROSUM)
 ================
-true
 
 ``` r
 knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 ``` r
-setwd("C:/Users/david/OneDrive/Escritorio/Personal/R")
+setwd("C:/Users/david/OneDrive/Escritorio/Personal/R/Data_science")
 ```
 
 # 1) CONTENIDO EN SAVIA EN EL TIEMPO
@@ -111,55 +110,55 @@ grafico_variedad_102_Ca <- crear_grafico(mccain_savia, "CIP 102", Ca)
 grafico_variedad_1_NO3
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 grafico_variedad_1_K
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 ``` r
 grafico_variedad_1_Ca
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->
 
 ``` r
 grafico_variedad_39_NO3
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->
 
 ``` r
 grafico_variedad_39_K
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-5.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-5.png)<!-- -->
 
 ``` r
 grafico_variedad_39_Ca
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-6.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-6.png)<!-- -->
 
 ``` r
 grafico_variedad_102_NO3
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-7.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-7.png)<!-- -->
 
 ``` r
 grafico_variedad_102_K
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-8.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-8.png)<!-- -->
 
 ``` r
 grafico_variedad_102_Ca
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-7-9.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-7-9.png)<!-- -->
 
 Con esto, podemos definir inicialmente que el comportamiento del calcio
 no está claro. En este caso, el argumento de esto no puede ser revelado.
@@ -225,7 +224,7 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATA
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 En este estudio, se implementa el **modelo de gompertz**, ajustado con
 respecto a la función original, ya que este define la acumulación de
@@ -491,7 +490,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd = 2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -509,7 +508,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
 legend("topleft",legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
 
 Ahora, con estos modelos, podemos determinar la acumulación de biomasa
 para un día de interés. Esto se ha realizado debido a que a la empresa
@@ -623,7 +622,7 @@ ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = PESO_TOTAL_39, group = T
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -842,7 +841,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd = 2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -860,7 +859,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
 
 ``` r
 pesos_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -964,7 +963,7 @@ ggplot() + geom_point(data=masa_seca_102, aes(x=DDS, y = PESO_TOTAL_102, group =
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -1184,7 +1183,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
       lty=1, col="seagreen2")
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -1202,7 +1201,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_102, ymax_0_102, k_0_102, lag_0_102)
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4","seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
 
 ``` r
 pesos_savia_100_102 <- Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_102,a_100_102)
@@ -1469,7 +1468,7 @@ ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -1489,7 +1488,7 @@ ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-31-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-31-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -1509,7 +1508,7 @@ ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-31-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-31-3.png)<!-- -->
 
 Este procedimiento se realiza para los otros dos nutrientes analizados.
 
@@ -1679,7 +1678,7 @@ ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -1699,7 +1698,7 @@ ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-35-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-35-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -1719,7 +1718,7 @@ ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-35-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-35-3.png)<!-- -->
 
 ## K
 
@@ -1887,7 +1886,7 @@ ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) +
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -1907,7 +1906,7 @@ ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-39-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-39-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -1927,7 +1926,7 @@ ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO))
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-39-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-39-3.png)<!-- -->
 
 # 4) MODELO RENDIMIENTO
 
@@ -1954,7 +1953,7 @@ ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = 
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2173,7 +2172,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2191,7 +2190,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_1, ymax_0_1, k_0_1, lag_0_1),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_1 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_1,ymax_100_1,k_100_1,lag_100_1)
@@ -2294,7 +2293,7 @@ ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, grou
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 Gompertz <- function(x, y0, ymax, k, lag){
@@ -2533,7 +2532,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2551,7 +2550,7 @@ lines(DDS_LEVELS, Gompertz(DDS_LEVELS, y0_0_39, ymax_0_39, k_0_39, lag_0_39),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-50-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-50-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_39 <- Gompertz(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_39,ymax_100_39,k_100_39,lag_100_39)
@@ -2654,7 +2653,7 @@ ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 ``` r
 Cuadratica <- function(x,y0,a){
@@ -2857,7 +2856,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
       lty=1, col="seagreen2", lwd=2)
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 ``` r
 par(mfrow=c(1,1))
@@ -2875,7 +2874,7 @@ lines(DDS_LEVELS, Cuadratica(DDS_LEVELS, y0_0_102, a_0_102),
 legend("topleft", legend=c("100% Fertilización", "66% Fertilización", "33% Fertilización", "0% Fertilización"), lwd = 3, col = c("cadetblue3","cadetblue2","cadetblue4", "seagreen2"))
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-56-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-56-2.png)<!-- -->
 
 ``` r
 RENDIMIENTOs_savia_100_102 <-Cuadratica(c(36,45,53,61,70,78,84,91,98,105,115),y0_100_102,a_100_102)
@@ -3134,7 +3133,7 @@ ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
 
 ``` r
 NO3CPI39 <-  Tabla_39%>%
@@ -3154,7 +3153,7 @@ ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATA
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-61-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-61-2.png)<!-- -->
 
 ``` r
 NO3CPI102 <-  Tabla_102%>%
@@ -3174,7 +3173,7 @@ ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRAT
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-61-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-61-3.png)<!-- -->
 
 ## Ca
 
@@ -3342,7 +3341,7 @@ ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
 
 ``` r
 CaCPI39 <-  Tabla_39%>%
@@ -3362,7 +3361,7 @@ ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-65-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-65-2.png)<!-- -->
 
 ``` r
 CaCPI102 <-  Tabla_102%>%
@@ -3382,7 +3381,7 @@ ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-65-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-65-3.png)<!-- -->
 
 ## K
 
@@ -3550,7 +3549,7 @@ ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIE
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
 
 ``` r
 KCPI39 <-  Tabla_39%>%
@@ -3570,7 +3569,7 @@ ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMI
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-69-2.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-69-2.png)<!-- -->
 
 ``` r
 KCPI102 <-  Tabla_102%>%
@@ -3590,7 +3589,7 @@ ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAM
   tema
 ```
 
-![](mccain_savia_files/figure-gfm/unnamed-chunk-69-3.png)<!-- -->
+![](Papa_files/figure-gfm/unnamed-chunk-69-3.png)<!-- -->
 
 De esta forma, hemos logrado correlacionar la información existente de
 un cultivo, segmentada temporalmente, implementando técnicas de análisis

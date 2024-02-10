@@ -2,9 +2,6 @@
 output: rmarkdown::github_document
 
 title: ANÁLISIS DEL CONTENIDO DE NUTRIENTES EN SAVIA, Y SU RELACIÓN CON EL RENDIMIENTO EN PLANTAS DE PAPA (SOLANUM TUBEROSUM)
-
-author:
-  name: David Alejandro Agudelo Castillo
 ---
 
 ```{r message=FALSE, warning=FALSE}

@@ -217,7 +217,7 @@ masa_seca_1 <- datos_masa_seca %>%
             TRATAMIENTO=TRATAMIENTO.)
 
 
-ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATAMIENTO., colour = TRATAMIENTO.)) +
+ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = PESO_TOTAL, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) +
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
   ggtitle("") +
@@ -302,6 +302,13 @@ Gomp_0_1 <- nls(PESO_TOTAL_0_1 ~ Gompertz(DDS_0_1, y0, ymax, k, lag),
              data=masa_seca_0_1,
              start = list(y0=-7, ymax=1700, k=10, lag=1))
 ```
+
+Es pertinente realizar una aclaración, y es que no todas las especies
+presentaron un ajuste al modelo de Gompertz con respecto a su
+acumulación de biomasa, ya que no se presentó un punto de acumulación
+lenta al final del ciclo, sino que por el contrario, este incrementó
+exponencialmente. Es por esto que la variedad 102 se ajustó a un modelo
+cúbico, el cual describe adecuadamente el incremento de la biomasa.
 
 Ahora, podemos determinar los parámetros que describen los modelos
 calculados para cada uno de los tratamientos.
@@ -615,7 +622,7 @@ masa_seca_39 <- datos_masa_seca %>%
             DDS_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
 
-ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = PESO_TOTAL_39, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = PESO_TOTAL_39, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
   ggtitle("") +
@@ -955,7 +962,7 @@ masa_seca_102 <- datos_masa_seca %>%
             DDS_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
 
-ggplot() + geom_point(data=masa_seca_102, aes(x=DDS, y = PESO_TOTAL_102, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_102, aes(x=DDS, y = PESO_TOTAL_102, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("PESO TOTAL") + 
   ylim(c(0,3000)) +
@@ -1297,7 +1304,7 @@ claridad sobre la información.
 
 ## NO3
 
-### CPI 1
+### VARIEDAD 1
 
 Iniciamos generando los dataframes requeridos, concatenando la
 infromación ya modelada a partir de la función de gompertz, con los
@@ -1349,7 +1356,7 @@ head(Tabla_1)
     ## 5    CIP 1 338.34740  70 0% Fertilización 6583.333
     ## 6    CIP 1 514.08931  78 0% Fertilización 6008.333
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -1397,7 +1404,7 @@ head(Tabla_39)
     ## 5   CIP 39 227.29861  70 0% Fertilización 6316.667
     ## 6   CIP 39 394.48995  78 0% Fertilización 7858.333
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -1458,8 +1465,8 @@ NO3CPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI1,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Peso seco (g)", y="Contenido de nitrato (ppm)")+
@@ -1478,8 +1485,8 @@ NO3CPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI39,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Peso seco (g)", y="Contenido de nitrato (ppm)")+
@@ -1498,8 +1505,8 @@ NO3CPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI102,aes(x=PESO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Peso seco (g)", y="Contenido de nitrato (ppm)")+
@@ -1514,7 +1521,7 @@ Este procedimiento se realiza para los otros dos nutrientes analizados.
 
 ## Ca
 
-### CPI 1
+### VARIEDAD 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
@@ -1562,7 +1569,7 @@ head(Tabla_1)
     ## 5    CIP 1 338.34740  70 0% Fertilización 4.000000
     ## 6    CIP 1 514.08931  78 0% Fertilización 4.000000
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -1610,7 +1617,7 @@ head(Tabla_39)
     ## 5   CIP 39 227.29861  70 0% Fertilización  4.000000
     ## 6   CIP 39 394.48995  78 0% Fertilización  4.000000
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -1668,9 +1675,9 @@ CaCPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
+ggplot(CaCPI1,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Peso seco (g)", y="Contenido de calcio (ppm)")+
-  geom_line(size = 1)  +
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,20,1))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   geom_point( size=2, fill="white") +
@@ -1688,9 +1695,9 @@ CaCPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
+ggplot(CaCPI39,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Peso seco (g)", y="Contenido de calcio (ppm)")+
-  geom_line(size = 1)  +
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,20,2))+
   scale_x_continuous(breaks=seq(0,152000,200))+
   geom_point( size=2, fill="white") +
@@ -1708,8 +1715,8 @@ CaCPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,5,0.01))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Peso seco (g)", y="Contenido de calcio (ppm)")+
@@ -1722,7 +1729,7 @@ ggplot(CaCPI102,aes(x=PESO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO))
 
 ## K
 
-### CPI 1
+### VARIEDAD 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
@@ -1770,7 +1777,7 @@ head(Tabla_1)
     ## 5    CIP 1 338.34740  70 0% Fertilización 6191.667
     ## 6    CIP 1 514.08931  78 0% Fertilización 6183.333
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -1818,7 +1825,7 @@ head(Tabla_39)
     ## 5   CIP 39 227.29861  70 0% Fertilización 6250.000
     ## 6   CIP 39 394.48995  78 0% Fertilización 5900.000
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -1876,8 +1883,8 @@ KCPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI1,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Peso seco (g)", y="Contenido de potasio (ppm)")+
@@ -1896,8 +1903,8 @@ KCPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI39,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Peso seco (g)", y="Contenido de potasio (ppm)")+
@@ -1916,8 +1923,8 @@ KCPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI102,aes(x=PESO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,2000,200))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Peso seco (g)", y="Contenido de potasio (ppm)")+
@@ -1946,7 +1953,7 @@ masa_seca_1 <- datos_masa_seca %>%
             TRATAMIENTO=TRATAMIENTO.)
 
 
-ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_1, aes(x=DDS, y = REND_TUB_TON_HA, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
   ggtitle("") +
@@ -2286,7 +2293,7 @@ masa_seca_39 <- datos_masa_seca %>%
             DDS_39=DDS,
             TRATAMIENTO_39=TRATAMIENTO.)
 
-ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_39, aes(x=DDS, y = REND_TUB_TON_HA_39, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
   ggtitle("") +
@@ -2646,7 +2653,7 @@ masa_seca_102 <- datos_masa_seca %>%
             DDS_102=DDS,
             TRATAMIENTO_102=TRATAMIENTO.)
 
-ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102, group = TRATAMIENTO., colour = TRATAMIENTO.)) + 
+ggplot() + geom_point(data=masa_seca_102, aes(x=DDS_102, y = REND_TUB_TON_HA_102, group = TRATAMIENTO., colour = TRATAMIENTO., shape = TRATAMIENTO.)) + 
   xlab("DDS") + 
   ylab("RENDIMIENTO TOTAL") + 
   ggtitle("") +
@@ -2967,7 +2974,7 @@ apartado número tres, pero orientado al rendimiento del cultivo.
 
 ## NO3
 
-### CPI 1
+### VARIEDAD 1
 
 ``` r
 library(dplyr)
@@ -3017,7 +3024,7 @@ head(Tabla_1)
     ## 5    CIP 1  0.728464325  70 0% Fertilización 6775.000
     ## 6    CIP 1  1.480209275  78 0% Fertilización 6258.333
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -3065,7 +3072,7 @@ head(Tabla_39)
     ## 5   CIP 39   0.4884411  70 0% Fertilización 7100.000
     ## 6   CIP 39   1.0630792  78 0% Fertilización 8316.667
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -3123,8 +3130,8 @@ NO3CPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI1,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Rendimiento (ton/ha)", y="Contenido de nitrato (ppm)")+
@@ -3143,8 +3150,8 @@ NO3CPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI39,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Rendimiento (ton/ha)", y="Contenido de nitrato (ppm)")+
@@ -3163,8 +3170,8 @@ NO3CPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(NO3,na.rm=T)/sqrt(length(complete.cases(NO3))))
 
-ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Nitrato en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Rendimiento (ton/ha)", y="Contenido de nitrato (ppm)")+
@@ -3177,7 +3184,7 @@ ggplot(NO3CPI102,aes(x=RENDIMIENTO, y=NITRATO, group = TRATAMIENTO, colour =TRAT
 
 ## Ca
 
-### CPI 1
+### VARIEDAD 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
@@ -3225,7 +3232,7 @@ head(Tabla_1)
     ## 5    CIP 1  0.728464325  70 0% Fertilización 4.000000
     ## 6    CIP 1  1.480209275  78 0% Fertilización 4.000000
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -3273,7 +3280,7 @@ head(Tabla_39)
     ## 5   CIP 39   0.4884411  70 0% Fertilización  4.000000
     ## 6   CIP 39   1.0630792  78 0% Fertilización  4.000000
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -3331,8 +3338,8 @@ CaCPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(CaCPI1,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,20,1))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Rendimiento (ton/ha)", y="Contenido de calcio (ppm)")+
@@ -3351,8 +3358,8 @@ CaCPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(CaCPI39,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,20,2))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Rendimiento (ton/ha)", y="Contenido de calcio (ppm)")+
@@ -3371,8 +3378,8 @@ CaCPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(Ca,na.rm=T)/sqrt(length(complete.cases(Ca))))
 
-ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,5,0.01))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Calcio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Rendimiento (ton/ha)", y="Contenido de calcio (ppm)")+
@@ -3385,7 +3392,7 @@ ggplot(CaCPI102,aes(x=RENDIMIENTO, y=CALCIO, group = TRATAMIENTO, colour =TRATAM
 
 ## K
 
-### CPI 1
+### VARIEDAD 1
 
 ``` r
 mccain_savia_0_1 <- mccain_savia %>%
@@ -3433,7 +3440,7 @@ head(Tabla_1)
     ## 5    CIP 1  0.728464325  70 0% Fertilización 6191.667
     ## 6    CIP 1  1.480209275  78 0% Fertilización 6183.333
 
-### CIP 39
+### VARIEDAD 39
 
 ``` r
 mccain_savia_0_39 <- mccain_savia %>%
@@ -3481,7 +3488,7 @@ head(Tabla_39)
     ## 5   CIP 39   0.4884411  70 0% Fertilización 6250.000
     ## 6   CIP 39   1.0630792  78 0% Fertilización 5900.000
 
-### CIP 102
+### VARIEDAD 102
 
 ``` r
 mccain_savia_0_102 <- mccain_savia %>%
@@ -3539,8 +3546,8 @@ KCPI1 <-  Tabla_1%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI1,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 1", x="Rendimiento (ton/ha)", y="Contenido de potasio (ppm)")+
@@ -3559,8 +3566,8 @@ KCPI39 <-  Tabla_39%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI39,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 39", x="Rendimiento (ton/ha)", y="Contenido de potasio (ppm)")+
@@ -3579,8 +3586,8 @@ KCPI102 <-  Tabla_102%>%
             TRATAMIENTO=Tratamiento,
             SE=sd(K,na.rm=T)/sqrt(length(complete.cases(K))))
 
-ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO)) + 
-  geom_line(size = 1)  +
+ggplot(KCPI102,aes(x=RENDIMIENTO, y=POTASIO, group = TRATAMIENTO, colour =TRATAMIENTO, shape = TRATAMIENTO)) + 
+  geom_line(size = 0.5)  +
   scale_y_continuous(breaks=seq(0,10000,500))+
   scale_x_continuous(breaks=seq(0,13,1))+
   labs(title="Potasio en savia", subtitle="Representación gráfica de valores obtenidos mediante modelamiento",caption="Variedad 102", x="Rendimiento (ton/ha)", y="Contenido de potasio (ppm)")+
